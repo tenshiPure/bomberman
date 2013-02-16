@@ -10,27 +10,27 @@ public class prac2 implements KeyListener
 	private String keyName;
 
 	/*
-	 * ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+	 * ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	 */
 	public prac2()
 	{
 		JFrame frame = new JFrame();
 
-		//‰æ–ÊƒTƒCƒY‚ğİ’è‚·‚é (x, y, width, height)
+		//ç”»é¢ã‚µã‚¤ã‚ºã‚’è¨­å®šã™ã‚‹ (x, y, width, height)
 		frame.setBounds(500, 500, 500, 500);
 
-		//‰æ–Ê‚ğ•Â‚¶‚½‚Æ‚«‚ÉƒvƒƒZƒX‚àI—¹‚·‚é
+		//ç”»é¢ã‚’é–‰ã˜ãŸã¨ãã«ãƒ—ãƒ­ã‚»ã‚¹ã‚‚çµ‚äº†ã™ã‚‹
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-		//‰æ–Ê•\¦‚Ì³”Û
+		//ç”»é¢è¡¨ç¤ºã®æ­£å¦
 		frame.setVisible(true);
 		
-		//ƒCƒxƒ“ƒgóæ‚Ìİ’è
+		//ã‚¤ãƒ™ãƒ³ãƒˆå—å–ã®è¨­å®š
 		frame.addKeyListener(this);
 	}
 
 	/*
-	 * ƒL[‚ª‰Ÿ‚³‚ê‚½‚Æ‚«‚ÉŒÄ‚Î‚ê‚éƒƒ\ƒbƒh
+	 * ã‚­ãƒ¼ãŒæŠ¼ã•ã‚ŒãŸã¨ãã«å‘¼ã°ã‚Œã‚‹ãƒ¡ã‚½ãƒƒãƒ‰
 	 */
 	public void keyPressed(KeyEvent event)
 	{
@@ -42,7 +42,7 @@ public class prac2 implements KeyListener
 
 
 	/*
-	 * ƒL[‚ª—£‚³‚ê‚½‚Æ‚«‚ÉŒÄ‚Î‚ê‚éƒƒ\ƒbƒh
+	 * ã‚­ãƒ¼ãŒé›¢ã•ã‚ŒãŸã¨ãã«å‘¼ã°ã‚Œã‚‹ãƒ¡ã‚½ãƒƒãƒ‰
 	 */
 	public void keyReleased(KeyEvent event)
 	{
@@ -50,10 +50,11 @@ public class prac2 implements KeyListener
 
 
 	/*
-	 * ƒL[‚ªƒ^ƒCƒv‚³‚ê‚½‚Æ‚«‚ÉŒÄ‚Î‚ê‚éƒƒ\ƒbƒh
+	 * ã‚­ãƒ¼ãŒã‚¿ã‚¤ãƒ—ã•ã‚ŒãŸã¨ãã«å‘¼ã°ã‚Œã‚‹ãƒ¡ã‚½ãƒƒãƒ‰
 	 */
 	public void keyTyped(KeyEvent event)
 	{
 	}
 }
+
 

@@ -6,3 +6,4 @@ class Main
 		prac2 prac2 = new prac2();
 	}
 }
+

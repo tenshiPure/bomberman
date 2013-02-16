@@ -10,7 +10,7 @@ public class keyReceiver implements KeyListener
 	private String keyName;
 
 	/*
-	 * �R���X�g���N�^
+	 * コンストラクタ
 	 */
 	public keyReceiver()
 	{
@@ -18,7 +18,7 @@ public class keyReceiver implements KeyListener
 	}
 
 	/*
-	 * �L�[�������ꂽ�Ƃ��ɌĂ΂�郁�\�b�h
+	 * キーが押されたときに呼ばれるメソッド
 	 */
 	public void keyPressed(KeyEvent event)
 	{
@@ -30,7 +30,7 @@ public class keyReceiver implements KeyListener
 
 
 	/*
-	 * �L�[�������ꂽ�Ƃ��ɌĂ΂�郁�\�b�h
+	 * キーが離されたときに呼ばれるメソッド
 	 */
 	public void keyReleased(KeyEvent event)
 	{
@@ -38,9 +38,10 @@ public class keyReceiver implements KeyListener
 
 
 	/*
-	 * �L�[���^�C�v���ꂽ�Ƃ��ɌĂ΂�郁�\�b�h
+	 * キーがタイプされたときに呼ばれるメソッド
 	 */
 	public void keyTyped(KeyEvent event)
 	{
 	}
 }
+

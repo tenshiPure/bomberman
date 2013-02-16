@@ -8,7 +8,7 @@ class Prac
 	private JPanel panel;
 
 	/*
-	 * ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+	 * ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	 */
 	public Prac(String str)
 	{
@@ -22,26 +22,26 @@ class Prac
 	}
 
 	/*
-	 * ƒtƒŒ[ƒ€‚Ì¶¬‚Æ‰Šúİ’è
+	 * ãƒ•ãƒ¬ãƒ¼ãƒ ã®ç”Ÿæˆã¨åˆæœŸè¨­å®š
 	 */
 	private void initFrame(int x, int y, int w, int h)
 	{
 		this.frame = new JFrame();
 
-		//‰æ–ÊƒTƒCƒY‚ğİ’è‚·‚é (x, y, width, height)
+		//ç”»é¢ã‚µã‚¤ã‚ºã‚’è¨­å®šã™ã‚‹ (x, y, width, height)
 		this.frame.setBounds(x, y, w, h);
 
-		//‰æ–Ê‚ğ•Â‚¶‚½‚Æ‚«‚ÉƒvƒƒZƒX‚àI—¹‚·‚é
+		//ç”»é¢ã‚’é–‰ã˜ãŸã¨ãã«ãƒ—ãƒ­ã‚»ã‚¹ã‚‚çµ‚äº†ã™ã‚‹
 		this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-		//‰æ–Ê•\¦‚Ì³”Û
+		//ç”»é¢è¡¨ç¤ºã®æ­£å¦
 		this.frame.setVisible(true);
 		
 		this.frame.addKeyListener(new keyReceiver());
 	}
 
 	/*
-	 * ƒpƒlƒ‹‚Ì¶¬‚Æ‰Šúİ’è
+	 * ãƒ‘ãƒãƒ«ã®ç”Ÿæˆã¨åˆæœŸè¨­å®š
 	 */
 	private void initPanel()
 	{
@@ -50,7 +50,7 @@ class Prac
 	}
 
 	/*
-	 * ƒ{ƒ^ƒ“‚Ì¶¬‚Æ‰Šúİ’è
+	 * ãƒœã‚¿ãƒ³ã®ç”Ÿæˆã¨åˆæœŸè¨­å®š
 	 */
 	private JButton createButton(String text)
 	{
@@ -61,7 +61,7 @@ class Prac
 	}
 
 	/*
-	 * ƒ‰ƒxƒ‹‚Ì¶¬‚Æ‰Šúİ’è
+	 * ãƒ©ãƒ™ãƒ«ã®ç”Ÿæˆã¨åˆæœŸè¨­å®š
 	 */
 	private JLabel createLabel(String text)
 	{
@@ -71,3 +71,4 @@ class Prac
 		return label;
 	}
 }
+
