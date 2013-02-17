@@ -3,12 +3,16 @@
  */
 class Wall implements FieldObject
 {
-	int x = 0;
-	int y = 0;
-	int w = 0;
-	int h = 0;
-	boolean breakable = false;
+	int x;
+	int y;
+	int w;
+	int h;
+	boolean breakable;
+	String type;
 
+	/*
+	 * コンストラクタ
+	 */
 	public Wall(int x, int y, int w, int h)
 	{
 		this.x = x;
@@ -16,5 +20,6 @@ class Wall implements FieldObject
 		this.w = w;
 		this.h = h;
 		this.breakable = false;
+		this.type = "wall";
 	}
 }
