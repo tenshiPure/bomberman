@@ -3,11 +3,14 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.event.*;
 
+/*
+ * コントローラ
+ */
 class FieldController implements KeyListener
 {
 	private JFrame frame;
 	private JPanel panel;
-	private JLabel label;
+	//private JLabel label;
 
 	private int keyCode;
 	private String keyName;
@@ -18,13 +21,19 @@ class FieldController implements KeyListener
 	public FieldController()
 	{
 		//フレームの生成と初期設定
-		initFrame(500, 500, 500, 500);
+		initFrame(Constant.FRAME_X, Constant.FRAME_Y, Constant.FRAME_W, Constant.FRAME_H);
 		
 		//パネルの生成と初期設定
 		initPanel();
 		
 		//ラベルの生成と初期設定
-		this.label = createLabel("look here");
+		//this.label = createLabel("");
+
+		//フィールドの作成
+		Field field = new Field();
+
+		//描画
+		View view = new View(field, panel);
 	}
 	
 	/*
@@ -35,7 +44,7 @@ class FieldController implements KeyListener
 		//フレームの生成
 		this.frame = new JFrame();
 
-		//画面サイズを設定する (x, y, width, height)
+		//サイズを設定する
 		this.frame.setBounds(x, y, w, h);
 
 		//画面を閉じたときにプロセスも終了する
@@ -53,30 +62,40 @@ class FieldController implements KeyListener
 	 */
 	private void initPanel()
 	{
+		//パネルの作成
 		this.panel = new JPanel();
+
+		//自動レイアウトを無効
+		this.panel.setLayout(null);
+		
+		//フレームに追加
 		this.frame.add(this.panel);
 	}
 
-	/*
-	 * ラベルの生成と初期設定
-	 */
-	private JLabel createLabel(String text)
-	{
-		JLabel label = new JLabel(text);
-		this.panel.add(label);
+	///*
+	 //* ラベルの生成と初期設定
+	 //*/
+	//private JLabel createLabel(String text)
+	//{
+		//JLabel label = new JLabel(text);
+		//this.panel.add(label);
 
-		return label;
-	}
+		//return label;
+	//}
 
 	/*
 	 * キーが押されたときに呼ばれるメソッド
 	 */
 	public void keyPressed(KeyEvent event)
 	{
+		//キーコード
 		this.keyCode = event.getKeyCode();
+
+		//キー名（日本語）
 		this.keyName = event.getKeyText(this.keyCode);
 		
-		this.label.setText(this.keyCode + " : " + this.keyName);
+		System.out.println(this.keyCode + " : " + this.keyName);
+		//this.label.setText(this.keyCode + " : " + this.keyName);
 	}
 
 	/*
