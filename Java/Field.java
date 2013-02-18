@@ -1,65 +1,128 @@
 import java.util.ArrayList;
+import java.util.Random;
 
 /*
  * 障害物を管理するフィールド
  */
 class Field
 {
-	public ArrayList<Wall> walls = new ArrayList<Wall>();
+	public ArrayList<FieldObject> objects = new ArrayList<FieldObject>();
 
 	/*
 	 * コンストラクタ
 	 */
 	public Field()
 	{
-		//周りの壁を作成する
+		//周りの壁を生成する
 		createSideWalls();
+
+		//通路の壁を生成する
+		createRandomWalls();
+
+		//ランダムにブロックを生成する
+		createRandomBlocks();
+
+		//開いている部分にスペースを生成して埋める
+		fillSpace();
 	}
 
 	/*
-	 * 周りの壁を作成する
+	 * 周りの壁を生成する
 	 */
 	private void createSideWalls()
 	{
-		//50
-		int wall_start_x = Constant.SIDE_WALL_MARGIN_W;
-		int wall_start_y = Constant.SIDE_WALL_MARGIN_H;
-		//500
-		int wall_end_x = Constant.FRAME_W - (Constant.SIDE_WALL_MARGIN_W * 2);
-		int wall_end_y = Constant.FRAME_H - (Constant.SIDE_WALL_MARGIN_H * 2);
+		int end_i = Constant.FRAME_W / Constant.FIELD_OBJECT_W;
+		int end_j = Constant.FRAME_H / Constant.FIELD_OBJECT_H;
 
-		//50
-		int wall_w = Constant.FIELD_OBJECT_W;
-		int wall_h = Constant.FIELD_OBJECT_H;
-
-		for (int j = wall_start_y; j <= wall_end_y; j+=wall_h)
-			for (int i = wall_start_x; i <= wall_end_x; i+=wall_w)
-				if (i == wall_start_x || i == wall_end_x || j == wall_start_y || j == wall_end_y)
+		for (int j = 0; j < end_j; j++)
+			for (int i = 0; i < end_i; i++)
+				if (i == 0 || j == 0 || i == end_i - 1 || j == end_j - 1)
 				{
-					System.out.println("i : " + i);
-					System.out.println("j : " + j);
-					System.out.println();
-					this.walls.add(new Wall(i, j, wall_w, wall_h));
+					//左端、右端、上端、下端の場合、壁生成
+					this.objects.add(new Wall (i * Constant.FIELD_OBJECT_W, j * Constant.FIELD_OBJECT_H,
+														Constant.FIELD_OBJECT_W, Constant.FIELD_OBJECT_H));
 				}
-
-		//dump(this.walls);
 	}
 
 	/*
-	 * 開発補助
+	 * 通路の壁を生成する
 	 */
-	public void dump(ArrayList<Wall> walls)
+	private void createRandomWalls()
 	{
-		for (int i = 0; i < walls.size(); i++)
+		int end_x = Constant.FRAME_W / Constant.FIELD_OBJECT_W;
+		int end_y = Constant.FRAME_H / Constant.FIELD_OBJECT_H;
+
+		for (int y = 0; y < end_y; y++)
+			for (int x = 0; x < end_x; x++)
+				if (x % 2 == 0 && y % 2 == 0)
+				{
+					//縦横のマス目が偶数の場合、壁生成
+					this.objects.add(new Wall (x * Constant.FIELD_OBJECT_W, y * Constant.FIELD_OBJECT_H,
+														Constant.FIELD_OBJECT_W, Constant.FIELD_OBJECT_H));
+				}
+	}
+
+	/*
+	 * ランダムにブロックを生成する
+	 */
+	private void createRandomBlocks()
+	{
+		Random rand = new Random();
+
+		for (int i = 0; i < Constant.BLOCK_NUM; i++)
 		{
-			int x = walls.get(i).x;
-			int y = walls.get(i).y;
-			int w = walls.get(i).w;
-			int h = walls.get(i).h;
-			
-			System.out.println("walls " + i);
-			System.out.println("x : " + x + ", y : " + y + ", w : " + w + ", h : " + h);
-			System.out.println();
+			//左端右端を除いたマス目数
+			int x = rand.nextInt(Constant.FRAME_W / Constant.FIELD_OBJECT_W - 2) + 1;
+
+			//上端下端を除いたマス目数
+			int y = rand.nextInt(Constant.FRAME_H / Constant.FIELD_OBJECT_H - 2) + 1;
+
+			if (x % 2 == 1 || y % 2 == 1)
+			{
+				//縦横いずれかが奇数の場合、ブロック生成
+				this.objects.add(new Block (x * Constant.FIELD_OBJECT_W, y * Constant.FIELD_OBJECT_H,
+														Constant.FIELD_OBJECT_W, Constant.FIELD_OBJECT_H));
+			}
 		}
+	}
+
+	/*
+	 * 開いている部分にスペースを生成して埋める
+	 */
+	private void fillSpace()
+	{
+		int end_x = Constant.FRAME_W / Constant.FIELD_OBJECT_W;
+		int end_y = Constant.FRAME_H / Constant.FIELD_OBJECT_H;
+
+		String type = "";
+		for (int y = 0; y < end_y; y++)
+			for (int x = 0; x < end_x; x++)
+			{
+				type = getFieldObjectType(x, y);
+				if (type == "empty")
+				{
+					//壁でもブロックでも無い場合、スペース生成
+					this.objects.add(new Space (x * Constant.FIELD_OBJECT_W, y * Constant.FIELD_OBJECT_H,
+														Constant.FIELD_OBJECT_W, Constant.FIELD_OBJECT_H));
+				}
+			}
+	}
+
+	/*
+	 * そのマスのオブジェクトを調べる
+	 */
+	private String getFieldObjectType(int x, int y)
+	{
+		//全フィールドオブジェクトループ
+		for (int i = 0; i < this.objects.size(); i++)
+		{
+			if (this.objects.get(i).x == x * Constant.FIELD_OBJECT_W &&
+					this.objects.get(i).y == y * Constant.FIELD_OBJECT_H)
+			{
+				return this.objects.get(i).type;
+			}
+		}
+
+		return "empty";
 	}
 }

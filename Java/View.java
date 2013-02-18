@@ -17,33 +17,38 @@ class View
 		this.field = field;
 		this.panel = panel;
 
-		//壁の出力
-		outputFieldObjects(this.field.walls);
+		//フィールドオブジェクトの出力
+		outputFieldObjects(this.field.objects);
 	}
 
 	/*
 	 * フィールドオブジェクトを出力する
 	 */
-	private void outputFieldObjects(ArrayList<Wall> walls)
+	private void outputFieldObjects(ArrayList<FieldObject> objects)
 	{
 		int x;
 		int y;
 		int w;
 		int h;
+		String type;
 
-		ImageIcon icon;
+		//描画に用いるラベル
 		JLabel label;
+		
+		//ラベルに用いる画像
+		ImageIcon icon;
 
-		//全壁ループ
-		for (int i = 0; i < walls.size(); i++)
+		//全オブジェクトループ
+		for (int i = 0; i < objects.size(); i++)
 		{
-			x = walls.get(i).x;
-			y = walls.get(i).y;
-			w = walls.get(i).w;
-			h = walls.get(i).h;
+			x = objects.get(i).x;
+			y = objects.get(i).y;
+			w = objects.get(i).w;
+			h = objects.get(i).h;
+			type = objects.get(i).type;
 
 			//画像の用意
-			icon = new ImageIcon("../Image/Wall.gif");
+			icon = new ImageIcon("../Image/" + type + ".gif");
 
 			//画像でラベルを作成
 			label = new JLabel(icon);
