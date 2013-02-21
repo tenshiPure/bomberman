@@ -1,60 +1,67 @@
 import javax.swing.*;
 
 /*
- * フィールド設置物インターフェース
+ * フィールド設置物抽象クラス
  */
 abstract class FieldObject
 {
-	//座標
-	int x = 0;
-	int y = 0;
+	//位置マス目
+	private int i = 0;
+	private int j = 0;
 
-	//縦横
-	int w = 0;
-	int h = 0;
-	
 	//タイプ
-	String type = "";
+	private String type = "";
 	
 	//描画に使用する画像
-	ImageIcon icon;
+	private ImageIcon icon;
 
 	//描画に使用するラベル
-	JLabel label;
+	private JLabel label;
 
 	//描画するパネル
-	JPanel panel;
+	private JPanel panel;
 
 	/*
 	 * コンストラクタ
 	 * 具現化したクラスのコンストラクタから呼ばれる
 	 */
-	public FieldObject(int x, int y, int w, int h, String type, JPanel panel)
+	public FieldObject(int i, int j, String type, JPanel panel)
 	{
-		this.x = x;
-		this.y = y;
-		this.w = w;
-		this.h = h;
+		this.i = i;
+		this.j = j;
 		this.type = type;
 		this.icon = new ImageIcon("../Image/" + type + ".gif");
 		this.label = new JLabel(icon);
 		this.panel = panel;
 
 		//ラベルの表示位置
-		this.label.setBounds(x, y, w, h);
+		this.label.setBounds(Mapper.sToP(i), Mapper.sToP(j), Constant.OBJ_SIZE, Constant.OBJ_SIZE);
+
+		//パネルに追加
+		this.panel.add(this.label);
 	}
 
 	/*
-	 * 描画
+	 * ゲッター
 	 */
-	public void outputFieldObject()
+	public int getI()
 	{
-		//パネルに追加
-		this.panel.add(this.label);
+		return this.i;
+	}
 
-		//コンソールに出力
-		//System.out.println();
-		//System.out.println("-- outputFieldObject --");
-		//System.out.println(String.format("%5s ... x : %3d, y : %3d", this.type, this.x, this.y));
+	/*
+	 * ゲッター
+	 */
+	public int getJ()
+	{
+		return this.j;
+	}
+
+	/*
+	 * ゲッター
+	 */
+	public String getType()
+	{
+		return this.type;
 	}
 }

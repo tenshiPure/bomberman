@@ -8,13 +8,20 @@ import javax.swing.event.*;
  */
 class Bomberman implements KeyListener
 {
+	//位置マス目
 	private int i;
 	private int j;
+
+	//描画に使用する画像
 	private ImageIcon icon;
+
+	//描画に使用するラベル
 	private JLabel label;
 
+	//描画に使用するパネル
 	private JPanel panel;
 
+	//フィールドへの参照
 	private Field field;
 
 	/*
@@ -31,7 +38,7 @@ class Bomberman implements KeyListener
 		this.panel = panel;
 
 		//ラベルの表示位置
-		this.label.setBounds(50, 50, 50, 50);
+		this.label.setBounds(Mapper.sToP(1), Mapper.sToP(1), Constant.OBJ_SIZE, Constant.OBJ_SIZE);
 
 		//パネルに追加
 		this.panel.add(this.label);
@@ -60,7 +67,7 @@ class Bomberman implements KeyListener
 	}
 
 	/*
-	 * ボンバーマンの座標を更新する
+	 * ボンバーマンのマス目を更新する
 	 */
 	private void move(int keyCode)
 	{
@@ -86,7 +93,7 @@ class Bomberman implements KeyListener
 		}
 
 		//ラベルの表示位置
-		this.label.setBounds(i * 50, j * 50, 50, 50);
+		this.label.setBounds(Mapper.sToP(i), Mapper.sToP(j), Constant.OBJ_SIZE, Constant.OBJ_SIZE);
 	}
 
 	/*

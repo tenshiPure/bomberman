@@ -10,9 +10,16 @@ import javax.swing.event.*;
  */
 class Field
 {
+	//フレーム
 	private JFrame frame;
-	public JPanel panel;
+
+	//パネル
+	private JPanel panel;
+
+	//フィールドオブジェクトのリスト
 	private ArrayList<FieldObject> objects = new ArrayList<FieldObject>();
+
+	//ボンバーマン
 	private Bomberman bomberman;
 
 	/*
@@ -21,7 +28,7 @@ class Field
 	public Field()
 	{
 		//フレームの生成と初期設定
-		initFrame(Constant.FRAME_X, Constant.FRAME_Y, Constant.FRAME_W, Constant.FRAME_H);
+		initFrame();
 		
 		//パネルの生成と初期設定
 		initPanel();
@@ -36,7 +43,7 @@ class Field
 		createSideWalls();
 
 		//通路の壁を生成する
-		createRandomWalls();
+		createAisleWalls();
 
 		//開いている部分にスペースを生成して埋める
 		fillSpace();
@@ -45,13 +52,13 @@ class Field
 	/*
 	 * フレームの生成と初期設定
 	 */
-	private void initFrame(int x, int y, int w, int h)
+	private void initFrame()
 	{
 		//フレームの生成
 		this.frame = new JFrame();
 
 		//サイズを設定する
-		this.frame.setBounds(x, y, w, h);
+		this.frame.setBounds(Constant.FRAME_X, Constant.FRAME_Y, Constant.FRAME_W, Constant.FRAME_H);
 
 		//画面を閉じたときにプロセスも終了する
 		this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -80,46 +87,26 @@ class Field
 	 */
 	private void createSideWalls()
 	{
-		int end_i = Constant.FRAME_W / Constant.FIELD_OBJECT_W;
-		int end_j = Constant.FRAME_H / Constant.FIELD_OBJECT_H;
-
-		for (int j = 0; j < end_j; j++)
-			for (int i = 0; i < end_i; i++)
-				if (i == 0 || j == 0 || i == end_i - 1 || j == end_j - 1)
+		for (int j = 0; j <= Constant.MAX_J; j++)
+			for (int i = 0; i <= Constant.MAX_I; i++)
+				if (i == 0 || j == 0 || i == Constant.MAX_I || j == Constant.MAX_J)
 				{
 					//左端、右端、上端、下端の場合、壁生成
-					FieldObject wall = new Wall (i * Constant.FIELD_OBJECT_W, j * Constant.FIELD_OBJECT_H,
-															Constant.FIELD_OBJECT_W, Constant.FIELD_OBJECT_H,
-															this.panel);
-					//リストに追加
-					this.objects.add(wall);
-
-					//コンソール出力
-					wall.outputFieldObject();
+					this.objects.add(new Wall(i, j, this.panel));
 				}
 	}
 
 	/*
 	 * 通路の壁を生成する
 	 */
-	private void createRandomWalls()
+	private void createAisleWalls()
 	{
-		int end_x = Constant.FRAME_W / Constant.FIELD_OBJECT_W;
-		int end_y = Constant.FRAME_H / Constant.FIELD_OBJECT_H;
-
-		for (int y = 0; y < end_y; y++)
-			for (int x = 0; x < end_x; x++)
-				if (x % 2 == 0 && y % 2 == 0)
+		for (int j = 0; j <= Constant.MAX_J; j++)
+			for (int i = 0; i <= Constant.MAX_I; i++)
+				if (i % 2 == 0 && j % 2 == 0)
 				{
-					//縦横のマス目が偶数の場合、壁生成
-					FieldObject wall = new Wall (x * Constant.FIELD_OBJECT_W, y * Constant.FIELD_OBJECT_H,
-															Constant.FIELD_OBJECT_W, Constant.FIELD_OBJECT_H,
-															this.panel);
-					//リストに追加
-					this.objects.add(wall);
-
-					//コンソール出力
-					wall.outputFieldObject();
+					//縦横のマス目が両方偶数の場合、壁生成
+					this.objects.add(new Wall(i, j, this.panel));
 				}
 	}
 
@@ -128,29 +115,14 @@ class Field
 	 */
 	private void fillSpace()
 	{
-		int end_x = Constant.FRAME_W / Constant.FIELD_OBJECT_W;
-		int end_y = Constant.FRAME_H / Constant.FIELD_OBJECT_H;
-
-		String type = "";
-		for (int y = 0; y < end_y; y++)
-			for (int x = 0; x < end_x; x++)
+		for (int j = 0; j <= Constant.MAX_J; j++)
+			for (int i = 0; i <= Constant.MAX_I; i++)
 			{
-				//tmp
-				//if (x == 1 && y == 1)
-					//continue;
-
-				type = getFieldObjectType(x, y);
-				if (type == "empty")
+				//フィールドで空いているマスか調べる
+				if (getFieldObjectType(i, j) == "empty")
 				{
 					//壁でもブロックでも無い場合、スペース生成
-					FieldObject space = new Space (x * Constant.FIELD_OBJECT_W, y * Constant.FIELD_OBJECT_H,
-															Constant.FIELD_OBJECT_W, Constant.FIELD_OBJECT_H,
-															this.panel);
-					//リストに追加
-					this.objects.add(space);
-
-					//コンソール出力
-					space.outputFieldObject();
+					this.objects.add(new Space(i, j, this.panel));
 				}
 			}
 	}
@@ -158,16 +130,15 @@ class Field
 	/*
 	 * そのマスのオブジェクトを調べる
 	 */
-	//tmp x,y -> i,j
-	public String getFieldObjectType(int x, int y)
+	public String getFieldObjectType(int i, int j)
 	{
 		//全フィールドオブジェクトループ
-		for (int i = 0; i < this.objects.size(); i++)
+		for (int n = 0; n < this.objects.size(); n++)
 		{
-			if (this.objects.get(i).x == x * Constant.FIELD_OBJECT_W &&
-					this.objects.get(i).y == y * Constant.FIELD_OBJECT_H)
+			//引数で指定された座標のオブジェクトを調べる
+			if (this.objects.get(n).getI() == i && this.objects.get(n).getJ() == j)
 			{
-				return this.objects.get(i).type;
+				return this.objects.get(n).getType();
 			}
 		}
 
