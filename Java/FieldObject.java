@@ -41,7 +41,7 @@ abstract class FieldObject
 		this.panel = panel;
 
 		//ラベルの表示位置
-		label.setBounds(x, y, w, h);
+		this.label.setBounds(x, y, w, h);
 	}
 
 	/*

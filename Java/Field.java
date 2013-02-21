@@ -11,7 +11,7 @@ import javax.swing.event.*;
 class Field
 {
 	private JFrame frame;
-	private JPanel panel;
+	public JPanel panel;
 	private ArrayList<FieldObject> objects = new ArrayList<FieldObject>();
 	private Bomberman bomberman;
 
@@ -26,6 +26,12 @@ class Field
 		//パネルの生成と初期設定
 		initPanel();
 		
+		//ボンバーマンの生成
+		this.bomberman = new Bomberman(1, 1, this, this.panel);
+
+		//ボンバーマンがキーイベントを受け取るのでフレームに渡す
+		this.frame.addKeyListener(this.bomberman);
+
 		//周りの壁を生成する
 		createSideWalls();
 
@@ -34,12 +40,6 @@ class Field
 
 		//開いている部分にスペースを生成して埋める
 		fillSpace();
-
-		//ボンバーマンの生成
-		this.bomberman = new Bomberman(50, 50, this);
-
-		//ボンバーマンがキーイベントを受け取るのでフレームに渡す
-		this.frame.addKeyListener(this.bomberman);
 	}
 
 	/*
@@ -135,6 +135,10 @@ class Field
 		for (int y = 0; y < end_y; y++)
 			for (int x = 0; x < end_x; x++)
 			{
+				//tmp
+				//if (x == 1 && y == 1)
+					//continue;
+
 				type = getFieldObjectType(x, y);
 				if (type == "empty")
 				{
@@ -154,7 +158,8 @@ class Field
 	/*
 	 * そのマスのオブジェクトを調べる
 	 */
-	private String getFieldObjectType(int x, int y)
+	//tmp x,y -> i,j
+	public String getFieldObjectType(int x, int y)
 	{
 		//全フィールドオブジェクトループ
 		for (int i = 0; i < this.objects.size(); i++)
