@@ -1,3 +1,5 @@
+import javax.swing.*;
+
 /*
  * フィールド設置物インターフェース
  */
@@ -11,32 +13,48 @@ abstract class FieldObject
 	int w = 0;
 	int h = 0;
 	
-	//破壊可能か
-	boolean breakable = false;
-
 	//タイプ
 	String type = "";
 	
+	//描画に使用する画像
+	ImageIcon icon;
+
+	//描画に使用するラベル
+	JLabel label;
+
+	//描画するパネル
+	JPanel panel;
+
 	/*
 	 * コンストラクタ
 	 * 具現化したクラスのコンストラクタから呼ばれる
 	 */
-	public FieldObject(int x, int y, int w, int h, boolean breakable, String type)
+	public FieldObject(int x, int y, int w, int h, String type, JPanel panel)
 	{
 		this.x = x;
 		this.y = y;
 		this.w = w;
 		this.h = h;
-		this.breakable = breakable;
 		this.type = type;
+		this.icon = new ImageIcon("../Image/" + type + ".gif");
+		this.label = new JLabel(icon);
+		this.panel = panel;
+
+		//ラベルの表示位置
+		label.setBounds(x, y, w, h);
 	}
 
 	/*
-	 * 開発補助
+	 * 描画
 	 */
-	public void dump()
+	public void outputFieldObject()
 	{
-		System.out.println();
-		System.out.println("x : " + this.x + ", y : " + this.y + ", w : " + this.w + ", h : " + this.h);
+		//パネルに追加
+		this.panel.add(this.label);
+
+		//コンソールに出力
+		//System.out.println();
+		//System.out.println("-- outputFieldObject --");
+		//System.out.println(String.format("%5s ... x : %3d, y : %3d", this.type, this.x, this.y));
 	}
 }

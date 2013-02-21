@@ -1,29 +1,78 @@
 import java.util.ArrayList;
-import java.util.Random;
+
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+import javax.swing.event.*;
 
 /*
  * 障害物を管理するフィールド
  */
 class Field
 {
-	public ArrayList<FieldObject> objects = new ArrayList<FieldObject>();
+	private JFrame frame;
+	private JPanel panel;
+	private ArrayList<FieldObject> objects = new ArrayList<FieldObject>();
+	private Bomberman bomberman;
 
 	/*
 	 * コンストラクタ
 	 */
 	public Field()
 	{
+		//フレームの生成と初期設定
+		initFrame(Constant.FRAME_X, Constant.FRAME_Y, Constant.FRAME_W, Constant.FRAME_H);
+		
+		//パネルの生成と初期設定
+		initPanel();
+		
 		//周りの壁を生成する
 		createSideWalls();
 
 		//通路の壁を生成する
 		createRandomWalls();
 
-		//ランダムにブロックを生成する
-		createRandomBlocks();
-
 		//開いている部分にスペースを生成して埋める
 		fillSpace();
+
+		//ボンバーマンの生成
+		this.bomberman = new Bomberman(50, 50, this);
+
+		//ボンバーマンがキーイベントを受け取るのでフレームに渡す
+		this.frame.addKeyListener(this.bomberman);
+	}
+
+	/*
+	 * フレームの生成と初期設定
+	 */
+	private void initFrame(int x, int y, int w, int h)
+	{
+		//フレームの生成
+		this.frame = new JFrame();
+
+		//サイズを設定する
+		this.frame.setBounds(x, y, w, h);
+
+		//画面を閉じたときにプロセスも終了する
+		this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+		//画面表示の正否
+		this.frame.setVisible(true);
+	}
+
+	/*
+	 * パネルの生成と初期設定
+	 */
+	private void initPanel()
+	{
+		//パネルの作成
+		this.panel = new JPanel();
+
+		//自動レイアウトを無効
+		this.panel.setLayout(null);
+		
+		//フレームに追加
+		this.frame.add(this.panel);
 	}
 
 	/*
@@ -39,8 +88,14 @@ class Field
 				if (i == 0 || j == 0 || i == end_i - 1 || j == end_j - 1)
 				{
 					//左端、右端、上端、下端の場合、壁生成
-					this.objects.add(new Wall (i * Constant.FIELD_OBJECT_W, j * Constant.FIELD_OBJECT_H,
-														Constant.FIELD_OBJECT_W, Constant.FIELD_OBJECT_H));
+					FieldObject wall = new Wall (i * Constant.FIELD_OBJECT_W, j * Constant.FIELD_OBJECT_H,
+															Constant.FIELD_OBJECT_W, Constant.FIELD_OBJECT_H,
+															this.panel);
+					//リストに追加
+					this.objects.add(wall);
+
+					//コンソール出力
+					wall.outputFieldObject();
 				}
 	}
 
@@ -57,33 +112,15 @@ class Field
 				if (x % 2 == 0 && y % 2 == 0)
 				{
 					//縦横のマス目が偶数の場合、壁生成
-					this.objects.add(new Wall (x * Constant.FIELD_OBJECT_W, y * Constant.FIELD_OBJECT_H,
-														Constant.FIELD_OBJECT_W, Constant.FIELD_OBJECT_H));
+					FieldObject wall = new Wall (x * Constant.FIELD_OBJECT_W, y * Constant.FIELD_OBJECT_H,
+															Constant.FIELD_OBJECT_W, Constant.FIELD_OBJECT_H,
+															this.panel);
+					//リストに追加
+					this.objects.add(wall);
+
+					//コンソール出力
+					wall.outputFieldObject();
 				}
-	}
-
-	/*
-	 * ランダムにブロックを生成する
-	 */
-	private void createRandomBlocks()
-	{
-		Random rand = new Random();
-
-		for (int i = 0; i < Constant.BLOCK_NUM; i++)
-		{
-			//左端右端を除いたマス目数
-			int x = rand.nextInt(Constant.FRAME_W / Constant.FIELD_OBJECT_W - 2) + 1;
-
-			//上端下端を除いたマス目数
-			int y = rand.nextInt(Constant.FRAME_H / Constant.FIELD_OBJECT_H - 2) + 1;
-
-			if (x % 2 == 1 || y % 2 == 1)
-			{
-				//縦横いずれかが奇数の場合、ブロック生成
-				this.objects.add(new Block (x * Constant.FIELD_OBJECT_W, y * Constant.FIELD_OBJECT_H,
-														Constant.FIELD_OBJECT_W, Constant.FIELD_OBJECT_H));
-			}
-		}
 	}
 
 	/*
@@ -102,8 +139,14 @@ class Field
 				if (type == "empty")
 				{
 					//壁でもブロックでも無い場合、スペース生成
-					this.objects.add(new Space (x * Constant.FIELD_OBJECT_W, y * Constant.FIELD_OBJECT_H,
-														Constant.FIELD_OBJECT_W, Constant.FIELD_OBJECT_H));
+					FieldObject space = new Space (x * Constant.FIELD_OBJECT_W, y * Constant.FIELD_OBJECT_H,
+															Constant.FIELD_OBJECT_W, Constant.FIELD_OBJECT_H,
+															this.panel);
+					//リストに追加
+					this.objects.add(space);
+
+					//コンソール出力
+					space.outputFieldObject();
 				}
 			}
 	}
