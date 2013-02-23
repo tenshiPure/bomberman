@@ -87,12 +87,12 @@ class Field
 	 */
 	private void createSideWalls()
 	{
-		for (int j = 0; j <= Constant.MAX_J; j++)
-			for (int i = 0; i <= Constant.MAX_I; i++)
-				if (i == 0 || j == 0 || i == Constant.MAX_I || j == Constant.MAX_J)
+		for (int y = 0; y <= Constant.MAX_Y; y++)
+			for (int x = 0; x <= Constant.MAX_X; x++)
+				if (x == 0 || y == 0 || x == Constant.MAX_X || y == Constant.MAX_Y)
 				{
 					//左端、右端、上端、下端の場合、壁生成
-					this.objects.add(new Wall(i, j, this.panel));
+					this.objects.add(new Wall(x, y, this.panel));
 				}
 	}
 
@@ -101,12 +101,12 @@ class Field
 	 */
 	private void createAisleWalls()
 	{
-		for (int j = 0; j <= Constant.MAX_J; j++)
-			for (int i = 0; i <= Constant.MAX_I; i++)
-				if (i % 2 == 0 && j % 2 == 0)
+		for (int y = 0; y <= Constant.MAX_Y; y++)
+			for (int x = 0; x <= Constant.MAX_X; x++)
+				if (x % 2 == 0 && y % 2 == 0)
 				{
 					//縦横のマス目が両方偶数の場合、壁生成
-					this.objects.add(new Wall(i, j, this.panel));
+					this.objects.add(new Wall(x, y, this.panel));
 				}
 	}
 
@@ -115,14 +115,14 @@ class Field
 	 */
 	private void fillSpace()
 	{
-		for (int j = 0; j <= Constant.MAX_J; j++)
-			for (int i = 0; i <= Constant.MAX_I; i++)
+		for (int y = 0; y <= Constant.MAX_Y; y++)
+			for (int x = 0; x <= Constant.MAX_X; x++)
 			{
 				//フィールドで空いているマスか調べる
-				if (getFieldObjectType(i, j) == "empty")
+				if (getFieldObjectType(x, y) == "empty")
 				{
 					//壁でもブロックでも無い場合、スペース生成
-					this.objects.add(new Space(i, j, this.panel));
+					this.objects.add(new Space(x, y, this.panel));
 				}
 			}
 	}
@@ -130,13 +130,13 @@ class Field
 	/*
 	 * そのマスのオブジェクトを調べる
 	 */
-	public String getFieldObjectType(int i, int j)
+	public String getFieldObjectType(int x, int y)
 	{
 		//全フィールドオブジェクトループ
 		for (int n = 0; n < this.objects.size(); n++)
 		{
 			//引数で指定された座標のオブジェクトを調べる
-			if (this.objects.get(n).getI() == i && this.objects.get(n).getJ() == j)
+			if (this.objects.get(n).getX() == x && this.objects.get(n).getY() == y)
 			{
 				return this.objects.get(n).getType();
 			}

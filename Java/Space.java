@@ -8,9 +8,9 @@ class Space extends FieldObject
 	/*
 	 * コンストラクタ
 	 */
-	public Space(int i, int j, JPanel panel)
+	public Space(int x, int y, JPanel panel)
 	{
-		super(i, j, "Space", panel);
+		super(x, y, "Space", panel);
 	}
 }
 

@@ -8,8 +8,8 @@ class Wall extends FieldObject
 	/*
 	 * コンストラクタ
 	 */
-	public Wall(int i, int j, JPanel panel)
+	public Wall(int x, int y, JPanel panel)
 	{
-		super(i, j, "Wall", panel);
+		super(x, y, "Wall", panel);
 	}
 }

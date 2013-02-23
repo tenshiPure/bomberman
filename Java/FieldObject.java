@@ -6,8 +6,8 @@ import javax.swing.*;
 abstract class FieldObject
 {
 	//位置マス目
-	private int i = 0;
-	private int j = 0;
+	private int x = 0;
+	private int y = 0;
 
 	//タイプ
 	private String type = "";
@@ -25,17 +25,17 @@ abstract class FieldObject
 	 * コンストラクタ
 	 * 具現化したクラスのコンストラクタから呼ばれる
 	 */
-	public FieldObject(int i, int j, String type, JPanel panel)
+	public FieldObject(int x, int y, String type, JPanel panel)
 	{
-		this.i = i;
-		this.j = j;
+		this.x = x;
+		this.y = y;
 		this.type = type;
 		this.icon = new ImageIcon("../Image/" + type + ".gif");
 		this.label = new JLabel(icon);
 		this.panel = panel;
 
 		//ラベルの表示位置
-		this.label.setBounds(Mapper.sToP(i), Mapper.sToP(j), Constant.OBJ_SIZE, Constant.OBJ_SIZE);
+		this.label.setBounds(Mapper.sToP(x), Mapper.sToP(y), Constant.OBJ_SIZE, Constant.OBJ_SIZE);
 
 		//パネルに追加
 		this.panel.add(this.label);
@@ -44,17 +44,17 @@ abstract class FieldObject
 	/*
 	 * ゲッター
 	 */
-	public int getI()
+	public int getX()
 	{
-		return this.i;
+		return this.x;
 	}
 
 	/*
 	 * ゲッター
 	 */
-	public int getJ()
+	public int getY()
 	{
-		return this.j;
+		return this.y;
 	}
 
 	/*

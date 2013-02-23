@@ -9,8 +9,8 @@ import javax.swing.event.*;
 class Bomberman implements KeyListener
 {
 	//位置マス目
-	private int i;
-	private int j;
+	private int x;
+	private int y;
 
 	//描画に使用する画像
 	private ImageIcon icon;
@@ -27,10 +27,10 @@ class Bomberman implements KeyListener
 	/*
 	 * コンストラクタ
 	 */
-	public Bomberman(int i, int j, Field field, JPanel panel)
+	public Bomberman(int x, int y, Field field, JPanel panel)
 	{
-		this.i = i;
-		this.j = j;
+		this.x = x;
+		this.y = y;
 		this.icon = new ImageIcon("../Image/Bomberman.gif");
 		this.label = new JLabel(icon);
 
@@ -73,36 +73,36 @@ class Bomberman implements KeyListener
 	{
 		if (keyCode == Constant.KEY_L)
 		{
-			if (isMovable(this.i - 1, this.j))
-				this.i -= 1;
+			if (isMovable(this.x - 1, this.y))
+				this.x -= 1;
 		}
 		else if (keyCode == Constant.KEY_D)
 		{
-			if (isMovable(this.i, this.j + 1))
-				this.j += 1;
+			if (isMovable(this.x, this.y + 1))
+				this.y += 1;
 		}
 		else if (keyCode == Constant.KEY_U)
 		{
-			if (isMovable(this.i, this.j - 1))
-				this.j -= 1;
+			if (isMovable(this.x, this.y - 1))
+				this.y -= 1;
 		}
 		else if (keyCode == Constant.KEY_R)
 		{
-			if (isMovable(this.i + 1, this.j))
-				this.i += 1;
+			if (isMovable(this.x + 1, this.y))
+				this.x += 1;
 		}
 
 		//ラベルの表示位置
-		this.label.setBounds(Mapper.sToP(i), Mapper.sToP(j), Constant.OBJ_SIZE, Constant.OBJ_SIZE);
+		this.label.setBounds(Mapper.sToP(x), Mapper.sToP(y), Constant.OBJ_SIZE, Constant.OBJ_SIZE);
 	}
 
 	/*
 	 * 移動の辺り判定を返却する
 	 */
-	private boolean isMovable(int i, int j)
+	private boolean isMovable(int x, int y)
 	{
 		//あるマスのオブジェクトを調べる
-		String type = this.field.getFieldObjectType(i, j);
+		String type = this.field.getFieldObjectType(x, y);
 
 		//空白の場合のみ、移動可能
 		if (type == "Space")

@@ -12,8 +12,8 @@ class Constant
 	public static final int OBJ_SIZE = 50;
 
 	//最大マス目（左上が頂点なので、使用可能な最大値は-1）
-	public static final int MAX_I = (Constant.FRAME_W / Constant.OBJ_SIZE) - 1;
-	public static final int MAX_J = (Constant.FRAME_H / Constant.OBJ_SIZE) - 1;
+	public static final int MAX_X = (Constant.FRAME_W / Constant.OBJ_SIZE) - 1;
+	public static final int MAX_Y = (Constant.FRAME_H / Constant.OBJ_SIZE) - 1;
 
 	//移動キーのコード
 	public static final int KEY_L = 72;
