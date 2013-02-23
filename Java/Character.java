@@ -45,24 +45,24 @@ abstract class Character {
 	/*
 	 * キャラクタのマス目を更新する
 	 */
-	protected boolean move(int keyCode) {
+	protected boolean move(int vector) {
 
 		int new_x = this.rect.x;
 		int new_y = this.rect.y;
 
-		if (keyCode == KeyEvent.VK_H || keyCode == Const.VECTOR_L) {
+		if (vector == Const.VECTOR_L) {
 			new_x -= Const.OBJ_SIZE;
 		}
 
-		else if (keyCode == KeyEvent.VK_J || keyCode == Const.VECTOR_D) {
+		else if (vector == Const.VECTOR_D) {
 			new_y += Const.OBJ_SIZE;
 		}
 
-		else if (keyCode == KeyEvent.VK_K || keyCode == Const.VECTOR_U) {
+		else if (vector == Const.VECTOR_U) {
 			new_y -= Const.OBJ_SIZE;
 		}
 
-		else if (keyCode == KeyEvent.VK_L || keyCode == Const.VECTOR_R) {
+		else if (vector == Const.VECTOR_R) {
 			new_x += Const.OBJ_SIZE;
 		}
 
@@ -97,6 +97,13 @@ abstract class Character {
 		for (int i = 0; i < this.field.walls.size(); i++) {
 			//壁のrect と移動先のrect が交差するかをboolean で取得
 			if (this.field.walls.get(i).rect.intersects(destination_rect))
+				return false;
+		}
+
+		//全ボムループ
+		for (int i = 0; i < this.field.bombs.size(); i++) {
+			//ボムのrect と移動先のrect が交差するかをboolean で取得
+			if (this.field.bombs.get(i).rect.intersects(destination_rect))
 				return false;
 		}
 

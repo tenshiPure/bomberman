@@ -33,12 +33,46 @@ class Bomberman extends Character implements KeyListener {
 	}
 
 	/*
+	 * ボムを足下に生成
+	 */
+	private void createBomb() {
+
+		this.field.bombs.add(new Bomb(this.rect.x, this.rect.y, this.panel));
+	}
+
+	/*
 	 * キーが押されたときに呼ばれるメソッド
 	 */
 	public void keyPressed(KeyEvent event) {
 
-		//ボンバーマンの移動
-		super.move(event.getKeyCode());
+		if (event.getKeyCode() == KeyEvent.VK_H) {
+			//左移動
+			this.move(Const.VECTOR_L);
+		}
+
+		else if (event.getKeyCode() == KeyEvent.VK_J) {
+			//下移動
+			this.move(Const.VECTOR_D);
+		}
+
+		else if (event.getKeyCode() == KeyEvent.VK_K) {
+			//上移動
+			this.move(Const.VECTOR_U);
+		}
+
+		else if (event.getKeyCode() == KeyEvent.VK_L) {
+			//右移動
+			this.move(Const.VECTOR_R);
+		}
+
+		else if (event.getKeyCode() == KeyEvent.VK_SPACE) {
+			//ボムを足下に生成
+			createBomb();
+		}
+
+		else {
+			return;
+		}
 
 		//生死判定
 		if (!isAlive()) {

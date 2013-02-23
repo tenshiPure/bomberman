@@ -23,6 +23,9 @@ class Field implements ActionListener {
 	//ボンバーマン
 	private Bomberman bomberman;
 
+	//ボムのリスト
+	public ArrayList<Bomb> bombs = new ArrayList<Bomb>();
+
 	//敵のリスト
 	public ArrayList<Enemy> enemies = new ArrayList<Enemy>();
 
