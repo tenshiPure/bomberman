@@ -8,15 +8,14 @@ import javax.swing.event.*;
  */
 class Bomberman implements KeyListener
 {
-	//位置マス目
-	private int x;
-	private int y;
+	//位置
+	private Rectangle rect;
 
 	//描画に使用する画像
-	private ImageIcon icon;
+	private ImageIcon icon = new ImageIcon("../Image/Bomberman.gif");
 
 	//描画に使用するラベル
-	private JLabel label;
+	private JLabel label = new JLabel(icon);
 
 	//描画に使用するパネル
 	private JPanel panel;
@@ -29,16 +28,13 @@ class Bomberman implements KeyListener
 	 */
 	public Bomberman(int x, int y, Field field, JPanel panel)
 	{
-		this.x = x;
-		this.y = y;
-		this.icon = new ImageIcon("../Image/Bomberman.gif");
-		this.label = new JLabel(icon);
+		this.rect = new Rectangle(x * 50, y * 50, Constant.OBJ_SIZE, Constant.OBJ_SIZE);
 
 		this.field = field;
 		this.panel = panel;
 
 		//ラベルの表示位置
-		this.label.setBounds(Mapper.sToP(1), Mapper.sToP(1), Constant.OBJ_SIZE, Constant.OBJ_SIZE);
+		this.label.setBounds(this.rect);
 
 		//パネルに追加
 		this.panel.add(this.label);
@@ -71,43 +67,43 @@ class Bomberman implements KeyListener
 	 */
 	private void move(int keyCode)
 	{
+		int new_x = this.rect.x;
+		int new_y = this.rect.y;
+
 		if (keyCode == Constant.KEY_L)
 		{
-			if (isMovable(this.x - 1, this.y))
-				this.x -= 1;
+			new_x -= Constant.OBJ_SIZE;
 		}
+
 		else if (keyCode == Constant.KEY_D)
 		{
-			if (isMovable(this.x, this.y + 1))
-				this.y += 1;
+			new_y += Constant.OBJ_SIZE;
 		}
+
 		else if (keyCode == Constant.KEY_U)
 		{
-			if (isMovable(this.x, this.y - 1))
-				this.y -= 1;
+			new_y -= Constant.OBJ_SIZE;
 		}
+
 		else if (keyCode == Constant.KEY_R)
 		{
-			if (isMovable(this.x + 1, this.y))
-				this.x += 1;
+			new_x += Constant.OBJ_SIZE;
 		}
 
+		else
+		{
+			return;
+		}
+
+		Rectangle destination_rect = new Rectangle(new_x, new_y, Constant.OBJ_SIZE, Constant.OBJ_SIZE);
+
+		//移動可能な場合、rect の差し替え
+		if (this.field.isMovable(destination_rect))
+			this.rect = destination_rect;
+
 		//ラベルの表示位置
-		this.label.setBounds(Mapper.sToP(x), Mapper.sToP(y), Constant.OBJ_SIZE, Constant.OBJ_SIZE);
-	}
+		this.label.setBounds(this.rect);
 
-	/*
-	 * 移動の辺り判定を返却する
-	 */
-	private boolean isMovable(int x, int y)
-	{
-		//あるマスのオブジェクトを調べる
-		String type = this.field.getFieldObjectType(x, y);
-
-		//空白の場合のみ、移動可能
-		if (type == "Space")
-			return true;
-
-		return false;
+		return;
 	}
 }

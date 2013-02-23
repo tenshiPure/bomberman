@@ -7,8 +7,6 @@ class Main
 	{
 		//フィールドの作成
 		Field field = new Field();
-
-		//練習エリア
 		//Prac prac = new Prac();
 	}
 }

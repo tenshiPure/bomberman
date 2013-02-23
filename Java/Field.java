@@ -16,8 +16,8 @@ class Field
 	//パネル
 	private JPanel panel;
 
-	//フィールドオブジェクトのリスト
-	private ArrayList<FieldObject> objects = new ArrayList<FieldObject>();
+	//壁のリスト
+	private ArrayList<Wall> walls = new ArrayList<Wall>();
 
 	//ボンバーマン
 	private Bomberman bomberman;
@@ -44,9 +44,6 @@ class Field
 
 		//通路の壁を生成する
 		createAisleWalls();
-
-		//開いている部分にスペースを生成して埋める
-		fillSpace();
 	}
 
 	/*
@@ -92,7 +89,7 @@ class Field
 				if (x == 0 || y == 0 || x == Constant.MAX_X || y == Constant.MAX_Y)
 				{
 					//左端、右端、上端、下端の場合、壁生成
-					this.objects.add(new Wall(x, y, this.panel));
+					this.walls.add(new Wall(x, y, this.panel));
 				}
 	}
 
@@ -106,42 +103,24 @@ class Field
 				if (x % 2 == 0 && y % 2 == 0)
 				{
 					//縦横のマス目が両方偶数の場合、壁生成
-					this.objects.add(new Wall(x, y, this.panel));
+					this.walls.add(new Wall(x, y, this.panel));
 				}
 	}
 
 	/*
-	 * 開いている部分にスペースを生成して埋める
+	 * 移動の辺り判定を返却する
 	 */
-	private void fillSpace()
+	public boolean isMovable(Rectangle destination_rect)
 	{
-		for (int y = 0; y <= Constant.MAX_Y; y++)
-			for (int x = 0; x <= Constant.MAX_X; x++)
-			{
-				//フィールドで空いているマスか調べる
-				if (getFieldObjectType(x, y) == "empty")
-				{
-					//壁でもブロックでも無い場合、スペース生成
-					this.objects.add(new Space(x, y, this.panel));
-				}
-			}
-	}
-
-	/*
-	 * そのマスのオブジェクトを調べる
-	 */
-	public String getFieldObjectType(int x, int y)
-	{
-		//全フィールドオブジェクトループ
-		for (int n = 0; n < this.objects.size(); n++)
+		// 全壁ループ
+		for (int i = 0; i < this.walls.size(); i++)
 		{
-			//引数で指定された座標のオブジェクトを調べる
-			if (this.objects.get(n).getX() == x && this.objects.get(n).getY() == y)
-			{
-				return this.objects.get(n).getType();
-			}
+			//壁のrect とボンバーマンのrect が交差するかをboolean で取得
+			if (this.walls.get(i).rect.intersects(destination_rect))
+				return false;
 		}
 
-		return "empty";
+		//どの壁とも交差しなければ、移動可
+		return true;
 	}
 }
