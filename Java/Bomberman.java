@@ -6,8 +6,8 @@ import javax.swing.event.*;
 /*
  * ボンバーマンクラス
  */
-class Bomberman implements KeyListener
-{
+class Bomberman implements KeyListener {
+
 	//位置
 	private Rectangle rect;
 
@@ -26,9 +26,9 @@ class Bomberman implements KeyListener
 	/*
 	 * コンストラクタ
 	 */
-	public Bomberman(int x, int y, Field field, JPanel panel)
-	{
-		this.rect = new Rectangle(x * 50, y * 50, Constant.OBJ_SIZE, Constant.OBJ_SIZE);
+	public Bomberman(int x, int y, Field field, JPanel panel) {
+
+		this.rect = new Rectangle(x * Const.OBJ_SIZE, y * Const.OBJ_SIZE, Const.OBJ_SIZE, Const.OBJ_SIZE);
 
 		this.field = field;
 		this.panel = panel;
@@ -43,63 +43,56 @@ class Bomberman implements KeyListener
 	/*
 	 * キーが押されたときに呼ばれるメソッド
 	 */
-	public void keyPressed(KeyEvent event)
-	{
+	public void keyPressed(KeyEvent event) {
 		move(event.getKeyCode());
 	}
 
 	/*
 	 * キーが離されたときに呼ばれるメソッド
 	 */
-	public void keyReleased(KeyEvent event)
-	{
+	public void keyReleased(KeyEvent event) {
 	}
 
 	/*
 	 * キーがタイプされたときに呼ばれるメソッド
 	 */
-	public void keyTyped(KeyEvent event)
-	{
+	public void keyTyped(KeyEvent event) {
 	}
 
 	/*
 	 * ボンバーマンのマス目を更新する
 	 */
-	private void move(int keyCode)
-	{
+	private void move(int keyCode) {
+
 		int new_x = this.rect.x;
 		int new_y = this.rect.y;
 
-		if (keyCode == Constant.KEY_L)
-		{
-			new_x -= Constant.OBJ_SIZE;
+		if (keyCode == KeyEvent.VK_H) {
+			new_x -= Const.OBJ_SIZE;
 		}
 
-		else if (keyCode == Constant.KEY_D)
-		{
-			new_y += Constant.OBJ_SIZE;
+		else if (keyCode == KeyEvent.VK_J) {
+			new_y += Const.OBJ_SIZE;
 		}
 
-		else if (keyCode == Constant.KEY_U)
-		{
-			new_y -= Constant.OBJ_SIZE;
+		else if (keyCode == KeyEvent.VK_K) {
+			new_y -= Const.OBJ_SIZE;
 		}
 
-		else if (keyCode == Constant.KEY_R)
-		{
-			new_x += Constant.OBJ_SIZE;
+		else if (keyCode == KeyEvent.VK_L) {
+			new_x += Const.OBJ_SIZE;
 		}
 
-		else
-		{
+		else {
 			return;
 		}
 
-		Rectangle destination_rect = new Rectangle(new_x, new_y, Constant.OBJ_SIZE, Constant.OBJ_SIZE);
+		Rectangle destination_rect = new Rectangle(new_x, new_y, Const.OBJ_SIZE, Const.OBJ_SIZE);
 
 		//移動可能な場合、rect の差し替え
-		if (this.field.isMovable(destination_rect))
+		if (this.field.isMovable(destination_rect)) {
 			this.rect = destination_rect;
+		}
 
 		//ラベルの表示位置
 		this.label.setBounds(this.rect);

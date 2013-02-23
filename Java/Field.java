@@ -8,8 +8,8 @@ import javax.swing.event.*;
 /*
  * 障害物を管理するフィールド
  */
-class Field
-{
+class Field {
+
 	//フレーム
 	private JFrame frame;
 
@@ -25,8 +25,8 @@ class Field
 	/*
 	 * コンストラクタ
 	 */
-	public Field()
-	{
+	public Field() {
+
 		//フレームの生成と初期設定
 		initFrame();
 		
@@ -49,13 +49,13 @@ class Field
 	/*
 	 * フレームの生成と初期設定
 	 */
-	private void initFrame()
-	{
+	private void initFrame() {
+
 		//フレームの生成
 		this.frame = new JFrame();
 
 		//サイズを設定する
-		this.frame.setBounds(Constant.FRAME_X, Constant.FRAME_Y, Constant.FRAME_W, Constant.FRAME_H);
+		this.frame.setBounds(Const.FRAME_X, Const.FRAME_Y, Const.FRAME_W, Const.FRAME_H);
 
 		//画面を閉じたときにプロセスも終了する
 		this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -67,8 +67,8 @@ class Field
 	/*
 	 * パネルの生成と初期設定
 	 */
-	private void initPanel()
-	{
+	private void initPanel() {
+
 		//パネルの作成
 		this.panel = new JPanel();
 
@@ -82,39 +82,40 @@ class Field
 	/*
 	 * 周りの壁を生成する
 	 */
-	private void createSideWalls()
-	{
-		for (int y = 0; y <= Constant.MAX_Y; y++)
-			for (int x = 0; x <= Constant.MAX_X; x++)
-				if (x == 0 || y == 0 || x == Constant.MAX_X || y == Constant.MAX_Y)
-				{
+	private void createSideWalls() {
+
+		for (int y = 0; y <= Const.MAX_Y; y++) {
+			for (int x = 0; x <= Const.MAX_X; x++) {
+				if (x == 0 || y == 0 || x == Const.MAX_X || y == Const.MAX_Y) {
 					//左端、右端、上端、下端の場合、壁生成
 					this.walls.add(new Wall(x, y, this.panel));
 				}
+			}
+		}
 	}
 
 	/*
 	 * 通路の壁を生成する
 	 */
-	private void createAisleWalls()
-	{
-		for (int y = 0; y <= Constant.MAX_Y; y++)
-			for (int x = 0; x <= Constant.MAX_X; x++)
-				if (x % 2 == 0 && y % 2 == 0)
-				{
+	private void createAisleWalls() {
+
+		for (int y = 0; y <= Const.MAX_Y; y++) {
+			for (int x = 0; x <= Const.MAX_X; x++) {
+				if (x % 2 == 0 && y % 2 == 0) {
 					//縦横のマス目が両方偶数の場合、壁生成
 					this.walls.add(new Wall(x, y, this.panel));
 				}
+			}
+		}
 	}
 
 	/*
-	 * 移動の辺り判定を返却する
+	 * 移動のあたり判定を返却する
 	 */
-	public boolean isMovable(Rectangle destination_rect)
-	{
+	public boolean isMovable(Rectangle destination_rect) {
+
 		// 全壁ループ
-		for (int i = 0; i < this.walls.size(); i++)
-		{
+		for (int i = 0; i < this.walls.size(); i++) {
 			//壁のrect とボンバーマンのrect が交差するかをboolean で取得
 			if (this.walls.get(i).rect.intersects(destination_rect))
 				return false;

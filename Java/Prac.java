@@ -8,12 +8,8 @@ import java.awt.Point;
 /*
  * 練習クラス
  */
-class Prac extends JFrame
-{
-	public Prac()
-	{
-		Point point = new Point(3, 5);
+class Prac extends JFrame {
 
-		System.out.println("x : " + point.x + " , y : " + point.y);
+	public Prac() {
 	}
 }
