@@ -4,7 +4,7 @@ import javax.swing.*;
 import javax.swing.event.*;
 
 /*
- * ボンバーマンクラス
+ * 移動キャラクタクラス
  */
 abstract class Character {
 
@@ -45,7 +45,7 @@ abstract class Character {
 	/*
 	 * キャラクタのマス目を更新する
 	 */
-	protected void move(int keyCode) {
+	protected boolean move(int keyCode) {
 
 		int new_x = this.rect.x;
 		int new_y = this.rect.y;
@@ -67,19 +67,40 @@ abstract class Character {
 		}
 
 		else {
-			return;
+			return false;
 		}
 
+		//移動先を矩形で生成する
 		Rectangle destination_rect = new Rectangle(new_x, new_y, Const.OBJ_SIZE, Const.OBJ_SIZE);
 
-		//移動可能な場合、rect の差し替え
-		if (this.field.isMovable(destination_rect)) {
+		//移動判定
+		if (isMovable(destination_rect)) {
+
+			//rect の差し替え
 			this.rect = destination_rect;
+
+			//ラベルの表示位置
+			this.label.setBounds(this.rect);
+
+			return true;
 		}
 
-		//ラベルの表示位置
-		this.label.setBounds(this.rect);
+		return false;
+	}
 
-		return;
+	/*
+	 * 移動のあたり判定を返却する
+	 */
+	private boolean isMovable(Rectangle destination_rect) {
+
+		//全壁ループ
+		for (int i = 0; i < this.field.walls.size(); i++) {
+			//壁のrect と移動先のrect が交差するかをboolean で取得
+			if (this.field.walls.get(i).rect.intersects(destination_rect))
+				return false;
+		}
+
+		//どの壁とも交差しなければ、移動可
+		return true;
 	}
 }

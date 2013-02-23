@@ -18,16 +18,16 @@ class Field implements ActionListener {
 	private JPanel panel;
 
 	//壁のリスト
-	private ArrayList<Wall> walls = new ArrayList<Wall>();
+	public ArrayList<Wall> walls = new ArrayList<Wall>();
 
 	//ボンバーマン
 	private Bomberman bomberman;
 
 	//敵のリスト
-	private ArrayList<Enemy> enemies = new ArrayList<Enemy>();
+	public ArrayList<Enemy> enemies = new ArrayList<Enemy>();
 
 	//タイマー
-	private Timer timer;
+	public Timer timer;
 
 	/*
 	 * コンストラクタ
@@ -58,7 +58,7 @@ class Field implements ActionListener {
 		//タイマーを生成する
 		this.timer = new Timer(Const.TIMER_INTERVAL, this);
 
-		//タイマー開始
+		//タイマーを動かす
 		this.timer.start();
 	}
 
@@ -147,25 +147,9 @@ class Field implements ActionListener {
 	}
 
 	/*
-	 * 移動のあたり判定を返却する
+	 * 全敵を動かす
 	 */
-	public boolean isMovable(Rectangle destination_rect) {
-
-		//全壁ループ
-		for (int i = 0; i < this.walls.size(); i++) {
-			//壁のrect と移動先のrect が交差するかをboolean で取得
-			if (this.walls.get(i).rect.intersects(destination_rect))
-				return false;
-		}
-
-		//どの壁とも交差しなければ、移動可
-		return true;
-	}
-
-	/*
-	 * タイマーの発信するアクションイベントを受け取るメソッド(ActionListener)
-	 */
-	public void actionPerformed(ActionEvent e) {
+	private void moveAllEnemies() {
 
 		Random rand = new Random();
 
@@ -175,29 +159,38 @@ class Field implements ActionListener {
 			//ランダムに方向を決定する
 			int vector = rand.nextInt(4);
 
-			//敵の移動
+			//移動
 			this.enemies.get(i).move(vector);
-		}
-
-		//生死判定
-		if (!isAlive()) {
-			JOptionPane.showMessageDialog(this.panel, "Game Over!");
 		}
 	}
 
 	/*
-	 * ボンバーマンの生死を取得する
+	 * クロージング
 	 */
-	public boolean isAlive() {
+	public void gameClose() {
+		
+		//タイマーを止める
+		this.timer.stop();
 
-		//全敵ループ
-		for (int i = 0; i < this.enemies.size(); i++) {
-			//敵のrect とボンバーマンのrect が交差するかをboolean で取得
-			if (this.enemies.get(i).rect.intersects(this.bomberman.rect))
-				return false;
+		//ダイアログの表示
+		JOptionPane.showMessageDialog(this.panel, "Game Over!");
+
+		//終了
+		System.exit(0);
+	}
+
+	/*
+	 * タイマーの発信するアクションイベントを受け取るメソッド(ActionListener)
+	 */
+	public void actionPerformed(ActionEvent e) {
+
+		//全敵を動かす
+		moveAllEnemies();
+
+		//生死判定
+		if (!this.bomberman.isAlive()) {
+			//クロージング
+			gameClose();
 		}
-
-		//どの敵とも交差しなければ、生きている
-		return true;
 	}
 }

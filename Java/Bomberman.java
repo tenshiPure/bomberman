@@ -6,38 +6,30 @@ import javax.swing.event.*;
 /*
  * ボンバーマンクラス
  */
-class Bomberman implements KeyListener {
-
-	//位置
-	public Rectangle rect;
-
-	//描画に使用する画像
-	private ImageIcon icon = new ImageIcon("../Image/Bomberman.gif");
-
-	//描画に使用するラベル
-	private JLabel label = new JLabel(icon);
-
-	//描画に使用するパネル
-	private JPanel panel;
-
-	//フィールドへの参照
-	private Field field;
+class Bomberman extends Character implements KeyListener {
 
 	/*
 	 * コンストラクタ
 	 */
 	public Bomberman(int x, int y, Field field, JPanel panel) {
 
-		this.rect = new Rectangle(x * Const.OBJ_SIZE, y * Const.OBJ_SIZE, Const.OBJ_SIZE, Const.OBJ_SIZE);
+		super(x, y, "Bomberman", field, panel);
+	}
 
-		this.field = field;
-		this.panel = panel;
+	/*
+	 * ボンバーマンの生死を取得する
+	 */
+	public boolean isAlive() {
 
-		//ラベルの表示位置
-		this.label.setBounds(this.rect);
+		//全敵ループ
+		for (int i = 0; i < this.field.enemies.size(); i++) {
+			//敵のrect とボンバーマンのrect が交差するかをboolean で取得
+			if (this.field.enemies.get(i).rect.intersects(this.rect))
+				return false;
+		}
 
-		//パネルに追加
-		this.panel.add(this.label);
+		//どの敵とも交差しなければ、生きている
+		return true;
 	}
 
 	/*
@@ -46,11 +38,12 @@ class Bomberman implements KeyListener {
 	public void keyPressed(KeyEvent event) {
 
 		//ボンバーマンの移動
-		move(event.getKeyCode());
+		super.move(event.getKeyCode());
 
 		//生死判定
-		if (!this.field.isAlive()) {
-			JOptionPane.showMessageDialog(this.panel, "Game Over!");
+		if (!isAlive()) {
+			//クロージング
+			this.field.gameClose();
 		}
 	}
 
@@ -64,46 +57,5 @@ class Bomberman implements KeyListener {
 	 * キーがタイプされたときに呼ばれるメソッド
 	 */
 	public void keyTyped(KeyEvent event) {
-	}
-
-	/*
-	 * ボンバーマンのマス目を更新する
-	 */
-	private void move(int keyCode) {
-
-		int new_x = this.rect.x;
-		int new_y = this.rect.y;
-
-		if (keyCode == KeyEvent.VK_H) {
-			new_x -= Const.OBJ_SIZE;
-		}
-
-		else if (keyCode == KeyEvent.VK_J) {
-			new_y += Const.OBJ_SIZE;
-		}
-
-		else if (keyCode == KeyEvent.VK_K) {
-			new_y -= Const.OBJ_SIZE;
-		}
-
-		else if (keyCode == KeyEvent.VK_L) {
-			new_x += Const.OBJ_SIZE;
-		}
-
-		else {
-			return;
-		}
-
-		Rectangle destination_rect = new Rectangle(new_x, new_y, Const.OBJ_SIZE, Const.OBJ_SIZE);
-
-		//移動可能な場合、rect の差し替え
-		if (this.field.isMovable(destination_rect)) {
-			this.rect = destination_rect;
-		}
-
-		//ラベルの表示位置
-		this.label.setBounds(this.rect);
-
-		return;
 	}
 }
