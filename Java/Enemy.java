@@ -4,15 +4,15 @@ import javax.swing.*;
 import javax.swing.event.*;
 
 /*
- * ボンバーマンクラス
+ * 敵クラス
  */
-class Bomberman implements KeyListener {
+class Enemy {
 
 	//位置
 	public Rectangle rect;
 
 	//描画に使用する画像
-	private ImageIcon icon = new ImageIcon("../Image/Bomberman.gif");
+	private ImageIcon icon = new ImageIcon("../Image/Enemy.gif");
 
 	//描画に使用するラベル
 	private JLabel label = new JLabel(icon);
@@ -26,7 +26,7 @@ class Bomberman implements KeyListener {
 	/*
 	 * コンストラクタ
 	 */
-	public Bomberman(int x, int y, Field field, JPanel panel) {
+	public Enemy(int x, int y, Field field, JPanel panel) {
 
 		this.rect = new Rectangle(x * Const.OBJ_SIZE, y * Const.OBJ_SIZE, Const.OBJ_SIZE, Const.OBJ_SIZE);
 
@@ -41,52 +41,26 @@ class Bomberman implements KeyListener {
 	}
 
 	/*
-	 * キーが押されたときに呼ばれるメソッド
+	 * 敵のマス目を更新する
 	 */
-	public void keyPressed(KeyEvent event) {
-
-		//ボンバーマンの移動
-		move(event.getKeyCode());
-
-		//生死判定
-		if (!this.field.isAlive()) {
-			JOptionPane.showMessageDialog(this.panel, "Game Over!");
-		}
-	}
-
-	/*
-	 * キーが離されたときに呼ばれるメソッド
-	 */
-	public void keyReleased(KeyEvent event) {
-	}
-
-	/*
-	 * キーがタイプされたときに呼ばれるメソッド
-	 */
-	public void keyTyped(KeyEvent event) {
-	}
-
-	/*
-	 * ボンバーマンのマス目を更新する
-	 */
-	private void move(int keyCode) {
+	public void move(int vector) {
 
 		int new_x = this.rect.x;
 		int new_y = this.rect.y;
 
-		if (keyCode == KeyEvent.VK_H) {
+		if (vector == Const.VECTOR_L) {
 			new_x -= Const.OBJ_SIZE;
 		}
 
-		else if (keyCode == KeyEvent.VK_J) {
+		else if (vector == Const.VECTOR_D) {
 			new_y += Const.OBJ_SIZE;
 		}
 
-		else if (keyCode == KeyEvent.VK_K) {
+		else if (vector == Const.VECTOR_U) {
 			new_y -= Const.OBJ_SIZE;
 		}
 
-		else if (keyCode == KeyEvent.VK_L) {
+		else if (vector == Const.VECTOR_R) {
 			new_x += Const.OBJ_SIZE;
 		}
 
