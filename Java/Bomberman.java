@@ -82,10 +82,10 @@ class Bomberman extends Character implements KeyListener {
 			return;
 		}
 
-		//生死判定
+		//ボンバーマンの生死判定
 		if (!isAlive()) {
 			//クロージング
-			this.field.gameClose();
+			this.field.gameClose("Game Over!");
 		}
 	}
 

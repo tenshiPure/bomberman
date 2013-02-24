@@ -187,12 +187,21 @@ class Field implements ActionListener {
 			if (remainingCount == 0) {
 
 				//炎生成
-				this.fires.add(new Fire(this.bombs.get(i).rect.x, this.bombs.get(i).rect.y, this.panel));
+				createFires(this.bombs.get(i).rect);
 
 				//ボムの解放
 				this.releaseObject("bombs", i);
 			}
 		}
+	}
+
+	/*
+	 * 炎のカウントダウン
+	 */
+	private void countDownFires() {
+
+		//残り時間
+		int remainingCount;
 
 		//全炎ループ
 		for (int i = 0; i < this.fires.size(); i++) {
@@ -205,6 +214,87 @@ class Field implements ActionListener {
 				this.releaseObject("fires", i);
 			}
 		}
+	}
+
+	/*
+	 * 炎生成
+	 */
+	private void createFires(Rectangle center) {
+
+		//爆心地
+		this.fires.add(new Fire(center.x, center.y, this.panel));
+
+		//調査を矩形で生成する
+		Rectangle destination_rect = null;
+
+		//左方向
+		for (int i = 1; i <= 2; i++) {
+
+			destination_rect = new Rectangle(center.x - (i * 50), center.y, Const.OBJ_SIZE, Const.OBJ_SIZE);
+
+			if (!isWall(destination_rect)) {
+				break;
+			}
+
+			//壁でなければ、炎生成
+			this.fires.add(new Fire(center.x - (i * 50), center.y, this.panel));
+		}
+
+		//下方向
+		for (int i = 1; i <= 2; i++) {
+
+			destination_rect = new Rectangle(center.x, center.y + (i * 50), Const.OBJ_SIZE, Const.OBJ_SIZE);
+
+			if (!isWall(destination_rect)) {
+				break;
+			}
+
+			//壁でなければ、炎生成
+			this.fires.add(new Fire(center.x, center.y + (i * 50), this.panel));
+		}
+
+		//上方向
+		for (int i = 1; i <= 2; i++) {
+
+			destination_rect = new Rectangle(center.x, center.y + (i - 50), Const.OBJ_SIZE, Const.OBJ_SIZE);
+
+			if (!isWall(destination_rect)) {
+				break;
+			}
+
+			//壁でなければ、炎生成
+			this.fires.add(new Fire(center.x, center.y - (i * 50), this.panel));
+		}
+
+		//右方向
+		for (int i = 1; i <= 2; i++) {
+
+			destination_rect = new Rectangle(center.x + (i * 50), center.y, Const.OBJ_SIZE, Const.OBJ_SIZE);
+
+			if (!isWall(destination_rect)) {
+				break;
+			}
+
+			//壁でなければ、炎生成
+			this.fires.add(new Fire(center.x + (i * 50), center.y, this.panel));
+		}
+
+	}
+
+	/*
+	 * 壁かどうかを判定する
+	 */
+	private boolean isWall(Rectangle destination_rect) {
+
+		//全壁ループ
+		for (int i = 0; i < this.walls.size(); i++) {
+			//壁のrect と調査先のrect が交差するかをboolean で取得
+			if (this.walls.get(i).rect.intersects(destination_rect))
+				return false;
+		}
+
+		//どの壁とも交差しなければ、移動可
+		return true;
 	}
 
 	/*
@@ -227,18 +317,20 @@ class Field implements ActionListener {
 	}
 
 	/*
-	 * クロージング
+	 * 全敵の生死判定と解放・消去
 	 */
-	public void gameClose() {
-		
-		//タイマーを止める
-		this.timer.stop();
+	public int isAliveAllEnemies() {
 
-		//ダイアログの表示
-		JOptionPane.showMessageDialog(this.panel, "Game Over!");
+		//全敵ループ
+		for (int i = 0; i < this.enemies.size(); i++) {
+			//敵の生死判定
+			if (!this.enemies.get(i).isAlive()) {
+				//死亡した敵の解放と消去
+				this.releaseObject("enemies", i);
+			}
+		}
 
-		//終了
-		System.exit(0);
+		return this.enemies.size();
 	}
 
 	/*
@@ -252,20 +344,34 @@ class Field implements ActionListener {
 		//ボムのカウントダウン
 		countDownBombs();
 
-		//生死判定
+		//炎のカウントダウン
+		countDownFires();
+
+		//ボンバーマンの生死判定
 		if (!this.bomberman.isAlive()) {
 			//クロージング
-			gameClose();
+			gameClose("Game Over!");
 		}
 
-		//全敵ループ
-		for (int i = 0; i < this.enemies.size(); i++) {
-			//敵の生死判定
-			if (!this.enemies.get(i).isAlive()) {
-				//死亡した敵の解放と消去
-				this.releaseObject("enemies", i);
-			}
+		//全敵の生死判定と解放・消去
+		if (isAliveAllEnemies() == 0) {
+			//クロージング
+			gameClose("You Win!");
 		}
+	}
 
+	/*
+	 * クロージング
+	 */
+	public void gameClose(String msg) {
+		
+		//タイマーを止める
+		this.timer.stop();
+
+		//ダイアログの表示
+		JOptionPane.showMessageDialog(this.panel, msg);
+
+		//終了
+		System.exit(0);
 	}
 }

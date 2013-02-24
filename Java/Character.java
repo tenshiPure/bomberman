@@ -107,7 +107,7 @@ abstract class Character {
 				return false;
 		}
 
-		//どの壁とも交差しなければ、移動可
+		//どの要素とも交差しなければ、移動可
 		return true;
 	}
 
