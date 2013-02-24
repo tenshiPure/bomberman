@@ -12,7 +12,7 @@ abstract class Character {
 	public Rectangle rect;
 
 	//描画に使用するラベル
-	private JLabel label;
+	public JLabel label;
 
 	//描画に使用するパネル
 	protected JPanel panel;
@@ -110,4 +110,9 @@ abstract class Character {
 		//どの壁とも交差しなければ、移動可
 		return true;
 	}
+
+	/*
+	 * 移動キャラクタの生死を取得する
+	 */
+	abstract public boolean isAlive();
 }

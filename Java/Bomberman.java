@@ -17,6 +17,15 @@ class Bomberman extends Character implements KeyListener {
 	}
 
 	/*
+	 * ボムを足下に生成
+	 */
+	private void createBomb() {
+
+		this.field.bombs.add(new Bomb(this.rect.x, this.rect.y, this.panel));
+	}
+
+	/*
+	 * @override
 	 * ボンバーマンの生死を取得する
 	 */
 	public boolean isAlive() {
@@ -28,16 +37,15 @@ class Bomberman extends Character implements KeyListener {
 				return false;
 		}
 
-		//どの敵とも交差しなければ、生きている
+		//全炎ループ
+		for (int i = 0; i < this.field.fires.size(); i++) {
+			//炎のrect とボンバーマンのrect が交差するかをboolean で取得
+			if (this.field.fires.get(i).rect.intersects(this.rect))
+				return false;
+		}
+
+		//どのrect とも交差しなければ、生きている
 		return true;
-	}
-
-	/*
-	 * ボムを足下に生成
-	 */
-	private void createBomb() {
-
-		this.field.bombs.add(new Bomb(this.rect.x, this.rect.y, this.panel));
 	}
 
 	/*

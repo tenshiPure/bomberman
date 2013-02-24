@@ -2,18 +2,18 @@ import java.awt.*;
 import javax.swing.*;
 
 /*
- * ボム
+ * 炎
  */
-class Bomb {
+class Fire {
 
 	//座標
 	public Rectangle rect;
 
-	//爆発までの残り時間
-	public int remainingCount = 4;
+	//消滅までの残り時間
+	public int remainingCount = 2;
 
 	//ラベルを適当な画像で生成
-	public JLabel label = new JLabel(new ImageIcon("../Image/Bomb.gif"));
+	public JLabel label = new JLabel(new ImageIcon("../Image/Fire.gif"));
 
 	//描画するパネル
 	private JPanel panel;
@@ -21,7 +21,7 @@ class Bomb {
 	/*
 	 * コンストラクタ
 	 */
-	public Bomb(int x, int y, JPanel panel) {
+	public Fire(int x, int y, JPanel panel) {
 
 		//座標設定
 		this.rect = new Rectangle(x, y, Const.OBJ_SIZE, Const.OBJ_SIZE);
@@ -37,7 +37,7 @@ class Bomb {
 	}
 
 	/*
-	 * ボムの残り時間を更新
+	 * 炎の残り時間を更新
 	 */
 	public int countDown() {
 

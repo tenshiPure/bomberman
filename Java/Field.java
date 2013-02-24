@@ -26,11 +26,14 @@ class Field implements ActionListener {
 	//ボムのリスト
 	public ArrayList<Bomb> bombs = new ArrayList<Bomb>();
 
+	//炎のリスト
+	public ArrayList<Fire> fires = new ArrayList<Fire>();
+
 	//敵のリスト
 	public ArrayList<Enemy> enemies = new ArrayList<Enemy>();
 
 	//タイマー
-	public Timer timer;
+	private Timer timer;
 
 	/*
 	 * コンストラクタ
@@ -168,6 +171,62 @@ class Field implements ActionListener {
 	}
 
 	/*
+	 * ボムのカウントダウン
+	 */
+	private void countDownBombs() {
+
+		//残り時間
+		int remainingCount;
+
+		//全ボムループ
+		for (int i = 0; i < this.bombs.size(); i++) {
+			//個々の残り時間を更新
+			remainingCount = this.bombs.get(i).countDown();
+
+			//残り時間が限界を迎えた場合
+			if (remainingCount == 0) {
+
+				//炎生成
+				this.fires.add(new Fire(this.bombs.get(i).rect.x, this.bombs.get(i).rect.y, this.panel));
+
+				//ボムの解放
+				this.releaseObject("bombs", i);
+			}
+		}
+
+		//全炎ループ
+		for (int i = 0; i < this.fires.size(); i++) {
+			//個々の残り時間を更新
+			remainingCount = this.fires.get(i).countDown();
+
+			//残り時間が限界を迎えた場合
+			if (remainingCount == 0) {
+				//炎の解放
+				this.releaseObject("fires", i);
+			}
+		}
+	}
+
+	/*
+	 * オブジェクトを解放し、画面から消去する
+	 */
+	private void releaseObject(String type, int i) {
+
+		if (type == "bombs") {
+			this.bombs.get(i).label.setVisible(false);
+			this.bombs.remove(i);
+		}
+		else if (type == "fires") {
+			this.fires.get(i).label.setVisible(false);
+			this.fires.remove(i);
+		}
+		else if (type == "enemies") {
+			this.enemies.get(i).label.setVisible(false);
+			this.enemies.remove(i);
+		}
+	}
+
+	/*
 	 * クロージング
 	 */
 	public void gameClose() {
@@ -190,10 +249,23 @@ class Field implements ActionListener {
 		//全敵を動かす
 		moveAllEnemies();
 
+		//ボムのカウントダウン
+		countDownBombs();
+
 		//生死判定
 		if (!this.bomberman.isAlive()) {
 			//クロージング
 			gameClose();
 		}
+
+		//全敵ループ
+		for (int i = 0; i < this.enemies.size(); i++) {
+			//敵の生死判定
+			if (!this.enemies.get(i).isAlive()) {
+				//死亡した敵の解放と消去
+				this.releaseObject("enemies", i);
+			}
+		}
+
 	}
 }

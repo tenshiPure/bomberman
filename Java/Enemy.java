@@ -15,4 +15,21 @@ class Enemy extends Character {
 
 		super(x, y, "Enemy", field, panel);
 	}
+
+	/*
+	 * @override
+	 * 敵の生死を取得する
+	 */
+	public boolean isAlive() {
+
+		//全炎ループ
+		for (int i = 0; i < this.field.fires.size(); i++) {
+			//炎のrect と敵のrect が交差するかをboolean で取得
+			if (this.field.fires.get(i).rect.intersects(this.rect))
+				return false;
+		}
+
+		//どのrect とも交差しなければ、生きている
+		return true;
+	}
 }
