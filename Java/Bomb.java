@@ -15,9 +15,6 @@ class Bomb {
 	//ラベルを適当な画像で生成
 	public JLabel label = new JLabel(new ImageIcon("../Image/Bomb.gif"));
 
-	//描画するパネル
-	private JPanel panel;
-
 	/*
 	 * コンストラクタ
 	 */
@@ -27,13 +24,13 @@ class Bomb {
 		this.rect = new Rectangle(x, y, Const.OBJ_SIZE, Const.OBJ_SIZE);
 
 		//参照
-		this.panel = panel;
+		Main.panel = panel;
 
 		//ラベルの表示位置
 		this.label.setBounds(this.rect);
 
 		//パネルに追加
-		this.panel.add(this.label);
+		Main.panel.add(this.label);
 	}
 
 	/*

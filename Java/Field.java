@@ -11,12 +11,6 @@ import javax.swing.event.*;
  */
 class Field implements ActionListener {
 
-	//フレーム
-	private JFrame frame;
-
-	//パネル
-	private JPanel panel;
-
 	//壁のリスト
 	public ArrayList<Wall> walls = new ArrayList<Wall>();
 
@@ -40,12 +34,6 @@ class Field implements ActionListener {
 	 */
 	public Field() {
 
-		//フレームの生成と初期設定
-		initFrame();
-		
-		//パネルの生成と初期設定
-		initPanel();
-		
 		//周りの壁を生成する
 		createSideWalls();
 
@@ -53,10 +41,10 @@ class Field implements ActionListener {
 		createAisleWalls();
 
 		//ボンバーマンの生成
-		this.bomberman = new Bomberman(Const.BOMBERMAN_X, Const.BOMBERMAN_Y, this, this.panel);
+		this.bomberman = new Bomberman(Const.BOMBERMAN_X, Const.BOMBERMAN_Y, this, Main.panel);
 
 		//ボンバーマンがキーイベントを受け取るのでフレームに渡す
-		this.frame.addKeyListener(this.bomberman);
+		Main.frame.addKeyListener(this.bomberman);
 
 		//敵を生成する
 		createEnemies();
@@ -69,49 +57,6 @@ class Field implements ActionListener {
 	}
 
 	/*
-	 * フレームの生成と初期設定
-	 */
-	private void initFrame() {
-
-		//フレームの生成
-		this.frame = new JFrame();
-
-		//表示位置を設定する
-		this.frame.setBounds(Const.FRAME_X, Const.FRAME_Y, 0, 0);
-
-		//実表示領域のサイズを設定する
-        this.frame.getContentPane().setPreferredSize(new Dimension(Const.FRAME_W, Const.FRAME_H));
-        this.frame.pack();
-
-		//画面を閉じたときにプロセスも終了する
-		this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-		//画面表示の正否
-		this.frame.setVisible(true);
-	}
-
-	/*
-	 * パネルの生成と初期設定
-	 */
-	private void initPanel() {
-
-		//パネルの作成
-		this.panel = new JPanel();
-
-		//サイズを設定する
-		this.panel.setBounds(Const.FRAME_X, Const.FRAME_Y, Const.FRAME_W, Const.FRAME_H);
-
-		//背景色を設定する
-		this.panel.setBackground(new Color(99, 169, 99));
-
-		//自動レイアウトを無効
-		this.panel.setLayout(null);
-		
-		//フレームに追加
-		this.frame.add(this.panel);
-	}
-
-	/*
 	 * 周りの壁を生成する
 	 */
 	private void createSideWalls() {
@@ -120,7 +65,7 @@ class Field implements ActionListener {
 			for (int x = 0; x <= Const.MAX_X; x++) {
 				if (x == 0 || y == 0 || x == Const.MAX_X || y == Const.MAX_Y) {
 					//左端、右端、上端、下端の場合、壁生成
-					this.walls.add(new Wall(x, y, this.panel));
+					this.walls.add(new Wall(x, y, Main.panel));
 				}
 			}
 		}
@@ -135,7 +80,7 @@ class Field implements ActionListener {
 			for (int x = 0; x <= Const.MAX_X; x++) {
 				if (x % 2 == 0 && y % 2 == 0) {
 					//縦横のマス目が両方偶数の場合、壁生成
-					this.walls.add(new Wall(x, y, this.panel));
+					this.walls.add(new Wall(x, y, Main.panel));
 				}
 			}
 		}
@@ -147,9 +92,9 @@ class Field implements ActionListener {
 	private void createEnemies() {
 
 		//敵の生成
-		this.enemies.add(new Enemy(7, 9, this, this.panel));
-		this.enemies.add(new Enemy(3, 7, this, this.panel));
-		this.enemies.add(new Enemy(9, 5, this, this.panel));
+		this.enemies.add(new Enemy(7, 9, this, Main.panel));
+		this.enemies.add(new Enemy(3, 7, this, Main.panel));
+		this.enemies.add(new Enemy(9, 5, this, Main.panel));
 	}
 
 	/*
@@ -222,7 +167,7 @@ class Field implements ActionListener {
 	private void createFires(Rectangle center) {
 
 		//爆心地
-		this.fires.add(new Fire(center.x, center.y, this.panel));
+		this.fires.add(new Fire(center.x, center.y, Main.panel));
 
 		//調査を矩形で生成する
 		Rectangle destination_rect = null;
@@ -237,7 +182,7 @@ class Field implements ActionListener {
 			}
 
 			//壁でなければ、炎生成
-			this.fires.add(new Fire(center.x - (i * 50), center.y, this.panel));
+			this.fires.add(new Fire(center.x - (i * 50), center.y, Main.panel));
 		}
 
 		//下方向
@@ -250,7 +195,7 @@ class Field implements ActionListener {
 			}
 
 			//壁でなければ、炎生成
-			this.fires.add(new Fire(center.x, center.y + (i * 50), this.panel));
+			this.fires.add(new Fire(center.x, center.y + (i * 50), Main.panel));
 		}
 
 		//上方向
@@ -263,7 +208,7 @@ class Field implements ActionListener {
 			}
 
 			//壁でなければ、炎生成
-			this.fires.add(new Fire(center.x, center.y - (i * 50), this.panel));
+			this.fires.add(new Fire(center.x, center.y - (i * 50), Main.panel));
 		}
 
 		//右方向
@@ -276,7 +221,7 @@ class Field implements ActionListener {
 			}
 
 			//壁でなければ、炎生成
-			this.fires.add(new Fire(center.x + (i * 50), center.y, this.panel));
+			this.fires.add(new Fire(center.x + (i * 50), center.y, Main.panel));
 		}
 
 	}
@@ -369,7 +314,7 @@ class Field implements ActionListener {
 		this.timer.stop();
 
 		//ダイアログの表示
-		JOptionPane.showMessageDialog(this.panel, msg);
+		JOptionPane.showMessageDialog(Main.panel, msg);
 
 		//終了
 		System.exit(0);

@@ -14,9 +14,6 @@ abstract class Character {
 	//描画に使用するラベル
 	public JLabel label;
 
-	//描画に使用するパネル
-	protected JPanel panel;
-
 	//フィールドへの参照
 	protected Field field;
 
@@ -30,7 +27,7 @@ abstract class Character {
 
 		//参照
 		this.field = field;
-		this.panel = panel;
+		Main.panel = panel;
 
 		//ラベルを適当な画像で生成
 		this.label = new JLabel(new ImageIcon("../Image/" + type + ".gif"));
@@ -39,7 +36,7 @@ abstract class Character {
 		this.label.setBounds(this.rect);
 
 		//パネルに追加
-		this.panel.add(this.label);
+		Main.panel.add(this.label);
 	}
 
 	/*

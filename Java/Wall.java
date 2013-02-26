@@ -12,9 +12,6 @@ class Wall {
 	//ラベルを適当な画像で生成
 	private JLabel label = new JLabel(new ImageIcon("../Image/Wall.gif"));
 
-	//描画するパネル
-	private JPanel panel;
-
 	/*
 	 * コンストラクタ
 	 */
@@ -24,12 +21,12 @@ class Wall {
 		this.rect = new Rectangle(x * Const.OBJ_SIZE, y * Const.OBJ_SIZE, Const.OBJ_SIZE, Const.OBJ_SIZE);
 
 		//参照
-		this.panel = panel;
+		Main.panel = panel;
 
 		//ラベルの表示位置
 		this.label.setBounds(this.rect);
 
 		//パネルに追加
-		this.panel.add(this.label);
+		Main.panel.add(this.label);
 	}
 }

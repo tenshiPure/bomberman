@@ -21,7 +21,7 @@ class Bomberman extends Character implements KeyListener {
 	 */
 	private void createBomb() {
 
-		this.field.bombs.add(new Bomb(this.rect.x, this.rect.y, this.panel));
+		this.field.bombs.add(new Bomb(this.rect.x, this.rect.y, Main.panel));
 	}
 
 	/*
