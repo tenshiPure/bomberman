@@ -18,13 +18,10 @@ class Fire {
 	/*
 	 * コンストラクタ
 	 */
-	public Fire(int x, int y, JPanel panel) {
+	public Fire(int x, int y) {
 
 		//座標設定
 		this.rect = new Rectangle(x, y, Const.OBJ_SIZE, Const.OBJ_SIZE);
-
-		//参照
-		Main.panel = panel;
 
 		//ラベルの表示位置
 		this.label.setBounds(this.rect);

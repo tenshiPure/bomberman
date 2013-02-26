@@ -15,13 +15,10 @@ class Wall {
 	/*
 	 * コンストラクタ
 	 */
-	public Wall(int x, int y, JPanel panel) {
+	public Wall(int x, int y) {
 
 		//座標設定
 		this.rect = new Rectangle(x * Const.OBJ_SIZE, y * Const.OBJ_SIZE, Const.OBJ_SIZE, Const.OBJ_SIZE);
-
-		//参照
-		Main.panel = panel;
 
 		//ラベルの表示位置
 		this.label.setBounds(this.rect);

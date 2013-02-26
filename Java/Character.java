@@ -20,14 +20,13 @@ abstract class Character {
 	/*
 	 * コンストラクタ
 	 */
-	public Character(int x, int y, String type, Field field, JPanel panel) {
+	public Character(int x, int y, String type, Field field) {
 
 		//座標設定
 		this.rect = new Rectangle(x * Const.OBJ_SIZE, y * Const.OBJ_SIZE, Const.OBJ_SIZE, Const.OBJ_SIZE);
 
 		//参照
 		this.field = field;
-		Main.panel = panel;
 
 		//ラベルを適当な画像で生成
 		this.label = new JLabel(new ImageIcon("../Image/" + type + ".gif"));

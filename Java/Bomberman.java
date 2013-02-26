@@ -11,9 +11,9 @@ class Bomberman extends Character implements KeyListener {
 	/*
 	 * コンストラクタ
 	 */
-	public Bomberman(int x, int y, Field field, JPanel panel) {
+	public Bomberman(int x, int y, Field field) {
 
-		super(x, y, "Bomberman", field, panel);
+		super(x, y, "Bomberman", field);
 	}
 
 	/*
@@ -21,7 +21,7 @@ class Bomberman extends Character implements KeyListener {
 	 */
 	private void createBomb() {
 
-		this.field.bombs.add(new Bomb(this.rect.x, this.rect.y, Main.panel));
+		this.field.bombs.add(new Bomb(this.rect.x, this.rect.y));
 	}
 
 	/*

@@ -11,9 +11,9 @@ class Enemy extends Character {
 	/*
 	 * コンストラクタ
 	 */
-	public Enemy(int x, int y, Field field, JPanel panel) {
+	public Enemy(int x, int y, Field field) {
 
-		super(x, y, "Enemy", field, panel);
+		super(x, y, "Enemy", field);
 	}
 
 	/*

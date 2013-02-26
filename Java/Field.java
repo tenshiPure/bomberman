@@ -41,7 +41,7 @@ class Field implements ActionListener {
 		createAisleWalls();
 
 		//ボンバーマンの生成
-		this.bomberman = new Bomberman(Const.BOMBERMAN_X, Const.BOMBERMAN_Y, this, Main.panel);
+		this.bomberman = new Bomberman(Const.BOMBERMAN_X, Const.BOMBERMAN_Y, this);
 
 		//ボンバーマンがキーイベントを受け取るのでフレームに渡す
 		Main.frame.addKeyListener(this.bomberman);
@@ -65,7 +65,7 @@ class Field implements ActionListener {
 			for (int x = 0; x <= Const.MAX_X; x++) {
 				if (x == 0 || y == 0 || x == Const.MAX_X || y == Const.MAX_Y) {
 					//左端、右端、上端、下端の場合、壁生成
-					this.walls.add(new Wall(x, y, Main.panel));
+					this.walls.add(new Wall(x, y));
 				}
 			}
 		}
@@ -80,7 +80,7 @@ class Field implements ActionListener {
 			for (int x = 0; x <= Const.MAX_X; x++) {
 				if (x % 2 == 0 && y % 2 == 0) {
 					//縦横のマス目が両方偶数の場合、壁生成
-					this.walls.add(new Wall(x, y, Main.panel));
+					this.walls.add(new Wall(x, y));
 				}
 			}
 		}
@@ -92,9 +92,9 @@ class Field implements ActionListener {
 	private void createEnemies() {
 
 		//敵の生成
-		this.enemies.add(new Enemy(7, 9, this, Main.panel));
-		this.enemies.add(new Enemy(3, 7, this, Main.panel));
-		this.enemies.add(new Enemy(9, 5, this, Main.panel));
+		this.enemies.add(new Enemy(7, 9, this));
+		this.enemies.add(new Enemy(3, 7, this));
+		this.enemies.add(new Enemy(9, 5, this));
 	}
 
 	/*
@@ -167,7 +167,7 @@ class Field implements ActionListener {
 	private void createFires(Rectangle center) {
 
 		//爆心地
-		this.fires.add(new Fire(center.x, center.y, Main.panel));
+		this.fires.add(new Fire(center.x, center.y));
 
 		//調査を矩形で生成する
 		Rectangle destination_rect = null;
@@ -182,7 +182,7 @@ class Field implements ActionListener {
 			}
 
 			//壁でなければ、炎生成
-			this.fires.add(new Fire(center.x - (i * 50), center.y, Main.panel));
+			this.fires.add(new Fire(center.x - (i * 50), center.y));
 		}
 
 		//下方向
@@ -195,7 +195,7 @@ class Field implements ActionListener {
 			}
 
 			//壁でなければ、炎生成
-			this.fires.add(new Fire(center.x, center.y + (i * 50), Main.panel));
+			this.fires.add(new Fire(center.x, center.y + (i * 50)));
 		}
 
 		//上方向
@@ -208,7 +208,7 @@ class Field implements ActionListener {
 			}
 
 			//壁でなければ、炎生成
-			this.fires.add(new Fire(center.x, center.y - (i * 50), Main.panel));
+			this.fires.add(new Fire(center.x, center.y - (i * 50)));
 		}
 
 		//右方向
@@ -221,7 +221,7 @@ class Field implements ActionListener {
 			}
 
 			//壁でなければ、炎生成
-			this.fires.add(new Fire(center.x + (i * 50), center.y, Main.panel));
+			this.fires.add(new Fire(center.x + (i * 50), center.y));
 		}
 
 	}
