@@ -18,10 +18,10 @@ class Bomb {
 	/*
 	 * コンストラクタ
 	 */
-	public Bomb(int x, int y) {
+	public Bomb(Rectangle rect) {
 
 		//座標設定
-		this.rect = new Rectangle(x, y, Const.OBJ_SIZE, Const.OBJ_SIZE);
+		this.rect = new Rectangle(rect);
 
 		//ラベルの表示位置
 		this.label.setBounds(this.rect);
@@ -33,11 +33,8 @@ class Bomb {
 	/*
 	 * ボムの残り時間を更新
 	 */
-	public int countDown() {
+	public void countDown() {
 
-		//750 ごとに1000 減る
 		this.remainingCount -= 1;
-
-		return this.remainingCount;
 	}
 }

@@ -17,7 +17,6 @@ class Enemy extends Character {
 	}
 
 	/*
-	 * @override
 	 * 敵の生死を取得する
 	 */
 	public boolean isAlive() {

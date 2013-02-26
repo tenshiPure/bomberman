@@ -17,15 +17,6 @@ class Bomberman extends Character implements KeyListener {
 	}
 
 	/*
-	 * ボムを足下に生成
-	 */
-	private void createBomb() {
-
-		this.field.bombs.add(new Bomb(this.rect.x, this.rect.y));
-	}
-
-	/*
-	 * @override
 	 * ボンバーマンの生死を取得する
 	 */
 	public boolean isAlive() {
@@ -75,7 +66,7 @@ class Bomberman extends Character implements KeyListener {
 
 		else if (event.getKeyCode() == KeyEvent.VK_SPACE) {
 			//ボムを足下に生成
-			createBomb();
+			this.field.createBomb(this.rect);
 		}
 
 		else {

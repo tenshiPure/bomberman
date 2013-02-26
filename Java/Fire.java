@@ -18,10 +18,10 @@ class Fire {
 	/*
 	 * コンストラクタ
 	 */
-	public Fire(int x, int y) {
+	public Fire(Rectangle rect) {
 
 		//座標設定
-		this.rect = new Rectangle(x, y, Const.OBJ_SIZE, Const.OBJ_SIZE);
+		this.rect = rect;
 
 		//ラベルの表示位置
 		this.label.setBounds(this.rect);

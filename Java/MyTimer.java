@@ -30,8 +30,19 @@ class MyTimer implements ActionListener {
 		//全敵を動かす
 		moveAllEnemies();
 
+		//炎に触れている敵を解放・消去して、生存している敵の数を得る
+		int enemies_num = this.field.isAliveAllEnemies();
+
+		//敵が全滅していればクロージング
+		if (enemies_num == 0) {
+			Main.gameClose("You Win!");
+		}
+
 		//ボムのカウントダウン
 		countDownBombs();
+
+		//ボムの爆発
+		bombsExplosion();
 
 		//炎のカウントダウン
 		countDownFires();
@@ -41,12 +52,6 @@ class MyTimer implements ActionListener {
 		if (!this.field.bomberman.isAlive()) {
 			//クロージング
 			Main.gameClose("Game Over!");
-		}
-
-		//全敵の生死判定と解放・消去
-		if (isAliveAllEnemies() == 0) {
-			//クロージング
-			Main.gameClose("You Win!");
 		}
 	}
 
@@ -64,7 +69,18 @@ class MyTimer implements ActionListener {
 			int vector = rand.nextInt(4);
 
 			//移動
-			this.field.enemies.get(i).move(vector);
+			if (vector == 0) {
+				this.field.enemies.get(i).move(Const.VECTOR_L);
+			}
+			else if (vector == 1) {
+				this.field.enemies.get(i).move(Const.VECTOR_D);
+			}
+			else if (vector == 2) {
+				this.field.enemies.get(i).move(Const.VECTOR_U);
+			}
+			else if (vector == 3) {
+				this.field.enemies.get(i).move(Const.VECTOR_R);
+			}
 		}
 	}
 
@@ -73,19 +89,26 @@ class MyTimer implements ActionListener {
 	 */
 	private void countDownBombs() {
 
-		//残り時間
-		int remainingCount;
-
 		//全ボムループ
 		for (int i = 0; i < this.field.bombs.size(); i++) {
 			//個々の残り時間を更新
-			remainingCount = this.field.bombs.get(i).countDown();
+			this.field.bombs.get(i).countDown();
+		}
+	}
 
-			//残り時間が限界を迎えた場合
-			if (remainingCount == 0) {
+	/*
+	 * ボムの爆発
+	 */
+	private void bombsExplosion() {
+
+		//全ボムループ
+		for (int i = 0; i < this.field.bombs.size(); i++) {
+
+			//ボムの残り時間が無い場合
+			if (this.field.bombs.get(i).remainingCount == 0) {
 
 				//炎生成
-				createFires(this.field.bombs.get(i).rect);
+				this.field.createFires(this.field.bombs.get(i).rect);
 
 				//ボムの解放
 				this.field.releaseObject("bombs", i);
@@ -112,102 +135,5 @@ class MyTimer implements ActionListener {
 				this.field.releaseObject("fires", i);
 			}
 		}
-	}
-
-	/*
-	 * 炎生成
-	 */
-	private void createFires(Rectangle center) {
-
-		//爆心地
-		this.field.fires.add(new Fire(center.x, center.y));
-
-		//調査を矩形で生成する
-		Rectangle destination_rect = null;
-
-		//左方向
-		for (int i = 1; i <= 2; i++) {
-
-			destination_rect = new Rectangle(center.x - (i * 50), center.y, Const.OBJ_SIZE, Const.OBJ_SIZE);
-
-			if (!isWall(destination_rect)) {
-				break;
-			}
-
-			//壁でなければ、炎生成
-			this.field.fires.add(new Fire(center.x - (i * 50), center.y));
-		}
-
-		//下方向
-		for (int i = 1; i <= 2; i++) {
-
-			destination_rect = new Rectangle(center.x, center.y + (i * 50), Const.OBJ_SIZE, Const.OBJ_SIZE);
-
-			if (!isWall(destination_rect)) {
-				break;
-			}
-
-			//壁でなければ、炎生成
-			this.field.fires.add(new Fire(center.x, center.y + (i * 50)));
-		}
-
-		//上方向
-		for (int i = 1; i <= 2; i++) {
-
-			destination_rect = new Rectangle(center.x, center.y + (i - 50), Const.OBJ_SIZE, Const.OBJ_SIZE);
-
-			if (!isWall(destination_rect)) {
-				break;
-			}
-
-			//壁でなければ、炎生成
-			this.field.fires.add(new Fire(center.x, center.y - (i * 50)));
-		}
-
-		//右方向
-		for (int i = 1; i <= 2; i++) {
-
-			destination_rect = new Rectangle(center.x + (i * 50), center.y, Const.OBJ_SIZE, Const.OBJ_SIZE);
-
-			if (!isWall(destination_rect)) {
-				break;
-			}
-
-			//壁でなければ、炎生成
-			this.field.fires.add(new Fire(center.x + (i * 50), center.y));
-		}
-	}
-
-	/*
-	 * 壁かどうかを判定する
-	 */
-	private boolean isWall(Rectangle destination_rect) {
-
-		//全壁ループ
-		for (int i = 0; i < this.field.walls.size(); i++) {
-			//壁のrect と調査先のrect が交差するかをboolean で取得
-			if (this.field.walls.get(i).rect.intersects(destination_rect))
-				return false;
-		}
-
-		//どの壁とも交差しなければ、移動可
-		return true;
-	}
-
-	/*
-	 * 全敵の生死判定と解放・消去
-	 */
-	public int isAliveAllEnemies() {
-
-		//全敵ループ
-		for (int i = 0; i < this.field.enemies.size(); i++) {
-			//敵の生死判定
-			if (!this.field.enemies.get(i).isAlive()) {
-				//死亡した敵の解放と消去
-				this.field.releaseObject("enemies", i);
-			}
-		}
-
-		return this.field.enemies.size();
 	}
 }

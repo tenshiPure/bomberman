@@ -24,7 +24,7 @@ class TestDrow extends JFrame {
 		//適当に生成
 		for (int j = 0; j < 9; j++)
 			for (int i = 0; i < 9; i++)
-				bombs.add(new Bomb(i * 50, j * 50));
+				bombs.add(new Bomb(new Rectangle(i * 50, j * 50, 50, 50)));
 	}
 
 	//初期化

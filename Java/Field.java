@@ -11,11 +11,14 @@ import javax.swing.event.*;
  */
 class Field {
 
+	//ボンバーマン
+	public Bomberman bomberman;
+
 	//壁のリスト
 	public ArrayList<Wall> walls = new ArrayList<Wall>();
 
-	//ボンバーマン
-	public Bomberman bomberman;
+	//敵のリスト
+	public ArrayList<Enemy> enemies = new ArrayList<Enemy>();
 
 	//ボムのリスト
 	public ArrayList<Bomb> bombs = new ArrayList<Bomb>();
@@ -23,13 +26,13 @@ class Field {
 	//炎のリスト
 	public ArrayList<Fire> fires = new ArrayList<Fire>();
 
-	//敵のリスト
-	public ArrayList<Enemy> enemies = new ArrayList<Enemy>();
-
 	/*
 	 * コンストラクタ
 	 */
 	public Field() {
+
+		//ボンバーマンの生成
+		createBomberman();
 
 		//周りの壁を生成する
 		createSideWalls();
@@ -37,11 +40,19 @@ class Field {
 		//通路の壁を生成する
 		createAisleWalls();
 
-		//ボンバーマンの生成
-		createBomberman();
-
 		//敵を生成する
 		createEnemies();
+	}
+
+	/*
+	 * ボンバーマンを生成する
+	 */
+	private void createBomberman() {
+
+		this.bomberman = new Bomberman(Const.BOMBERMAN_X, Const.BOMBERMAN_Y, this);
+
+		//ボンバーマンがキーイベントを受け取るのでフレームに渡す
+		Main.frame.addKeyListener(this.bomberman);
 	}
 
 	/*
@@ -75,25 +86,111 @@ class Field {
 	}
 
 	/*
-	 * ボンバーマンを生成する
-	 */
-	private void createBomberman() {
-
-		this.bomberman = new Bomberman(Const.BOMBERMAN_X, Const.BOMBERMAN_Y, this);
-
-		//ボンバーマンがキーイベントを受け取るのでフレームに渡す
-		Main.frame.addKeyListener(this.bomberman);
-	}
-
-	/*
 	 * 敵を生成する
 	 */
 	private void createEnemies() {
 
 		//敵の生成
-		enemies.add(new Enemy(7, 9, this));
-		enemies.add(new Enemy(3, 7, this));
-		enemies.add(new Enemy(9, 5, this));
+		this.enemies.add(new Enemy(7, 9, this));
+		this.enemies.add(new Enemy(3, 7, this));
+		this.enemies.add(new Enemy(9, 5, this));
+	}
+
+	/*
+	 * ボムを生成する
+	 */
+	public void createBomb(Rectangle rect) {
+
+		this.bombs.add(new Bomb(rect));
+	}
+
+	/*
+	 * 炎を生成する
+	 */
+	public void createFires(Rectangle center) {
+
+		//爆心地に炎を生成する
+		this.fires.add(new Fire(center));
+
+		//壁まで炎をのばすために生成マスを矩形で表現する
+		Rectangle destination_rect = null;
+
+		//左方向
+		for (int i = 1; i <= 2; i++) {
+
+			destination_rect = new Rectangle(center.x - (i * 50), center.y, Const.OBJ_SIZE, Const.OBJ_SIZE);
+
+			if (!isWall(destination_rect)) {
+				break;
+			}
+			this.fires.add(new Fire(destination_rect));
+		}
+
+		//下方向
+		for (int i = 1; i <= 2; i++) {
+
+			destination_rect = new Rectangle(center.x, center.y + (i * 50), Const.OBJ_SIZE, Const.OBJ_SIZE);
+
+			if (!isWall(destination_rect)) {
+				break;
+			}
+			this.fires.add(new Fire(destination_rect));
+		}
+
+		//上方向
+		for (int i = 1; i <= 2; i++) {
+
+			destination_rect = new Rectangle(center.x, center.y + (i - 50), Const.OBJ_SIZE, Const.OBJ_SIZE);
+
+			if (!isWall(destination_rect)) {
+				break;
+			}
+			this.fires.add(new Fire(destination_rect));
+		}
+
+		//右方向
+		for (int i = 1; i <= 2; i++) {
+
+			destination_rect = new Rectangle(center.x + (i * 50), center.y, Const.OBJ_SIZE, Const.OBJ_SIZE);
+
+			if (!isWall(destination_rect)) {
+				break;
+			}
+			this.fires.add(new Fire(destination_rect));
+		}
+	}
+
+	/*
+	 * 壁かどうかを判定する
+	 */
+	private boolean isWall(Rectangle destination_rect) {
+
+		//全壁ループ
+		for (int i = 0; i < this.walls.size(); i++) {
+			//壁のrect と調査先のrect が交差するかをboolean で取得
+			if (this.walls.get(i).rect.intersects(destination_rect))
+				return false;
+		}
+
+		//どの壁とも交差しなければ、移動可
+		return true;
+	}
+
+	/*
+	 * 全敵の生死判定と解放・消去
+	 */
+	public int isAliveAllEnemies() {
+
+		//全敵ループ
+		for (int i = 0; i < this.enemies.size(); i++) {
+			//敵の生死判定
+			if (!this.enemies.get(i).isAlive()) {
+				//死亡した敵の解放と消去
+				this.releaseObject("enemies", i);
+			}
+		}
+
+		return this.enemies.size();
 	}
 
 	/*
@@ -101,17 +198,18 @@ class Field {
 	 */
 	public void releaseObject(String type, int i) {
 
+		//Todo:ださい
 		if (type == "bombs") {
-			bombs.get(i).label.setVisible(false);
-			bombs.remove(i);
+			this.bombs.get(i).label.setVisible(false);
+			this.bombs.remove(i);
 		}
 		else if (type == "fires") {
-			fires.get(i).label.setVisible(false);
-			fires.remove(i);
+			this.fires.get(i).label.setVisible(false);
+			this.fires.remove(i);
 		}
 		else if (type == "enemies") {
-			enemies.get(i).label.setVisible(false);
-			enemies.remove(i);
+			this.enemies.get(i).label.setVisible(false);
+			this.enemies.remove(i);
 		}
 	}
 }
