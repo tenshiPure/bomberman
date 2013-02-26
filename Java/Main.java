@@ -14,6 +14,9 @@ class Main {
 	//パネル
 	public static JPanel panel;
 
+	//タイマー
+	public static Timer timer;
+
 	/*
 	 * Guiパーツの初期化とFieldの生成
 	 */
@@ -25,10 +28,13 @@ class Main {
 		//パネルの生成と初期設定
 		initPanel();
 
-		//フィールドの作成
+		//フィールドの生成
 		Field field = new Field();
 
-		//お試しエリア（平常時はコメントアウト）
+		//タイマーの生成と起動
+		initTimer(field);
+
+		//下書きエリア
 		//Prac prac = new Prac();
 	}
 
@@ -73,5 +79,32 @@ class Main {
 		
 		//フレームに追加
 		Main.frame.add(Main.panel);
+	}
+
+	/*
+	 * タイマーの生成と初期設定
+	 */
+	public static void initTimer(Field field) {
+
+		//field参照を持つMyTimerを渡す
+		Main.timer = new Timer(Const.TIMER_INTERVAL, new MyTimer(field));
+
+		//タイマーを動かす
+		Main.timer.start();
+	}
+
+	/*
+	 * クロージング
+	 */
+	public static void gameClose(String msg) {
+		
+		//タイマーを止める
+		Main.timer.stop();
+
+		//ダイアログの表示
+		JOptionPane.showMessageDialog(Main.panel, msg);
+
+		//終了
+		System.exit(0);
 	}
 }
