@@ -42,7 +42,12 @@ class MyTimer implements ActionListener {
 		countDownBombs();
 
 		//ボムの爆発
-		bombsExplosion();
+		for (int i = 0; i < this.field.bombs.size(); i++) {
+			//ボムの残り時間が無い場合
+			if (this.field.bombs.get(i).remainingCount <= 0) {
+				this.field.bombsExplosion(this.field.bombs.get(i).rect, i);
+			}
+		}
 
 		//炎のカウントダウン
 		countDownFires();
@@ -93,26 +98,6 @@ class MyTimer implements ActionListener {
 		for (int i = 0; i < this.field.bombs.size(); i++) {
 			//個々の残り時間を更新
 			this.field.bombs.get(i).countDown();
-		}
-	}
-
-	/*
-	 * ボムの爆発
-	 */
-	private void bombsExplosion() {
-
-		//全ボムループ
-		for (int i = 0; i < this.field.bombs.size(); i++) {
-
-			//ボムの残り時間が無い場合
-			if (this.field.bombs.get(i).remainingCount <= 0) {
-
-				//炎生成
-				this.field.createFires(this.field.bombs.get(i).rect);
-
-				//ボムの解放
-				this.field.releaseObject("bombs", i);
-			}
 		}
 	}
 

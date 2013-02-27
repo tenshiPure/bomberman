@@ -121,15 +121,22 @@ class Field {
 		//壁まで炎をのばすために生成マスを矩形で表現する
 		Rectangle destination_rect = null;
 
+		int num;
+
 		//左方向
 		for (int i = 1; i <= 2; i++) {
 
 			destination_rect = new Rectangle(center.x - (i * 50), center.y, Const.OBJ_SIZE, Const.OBJ_SIZE);
 
-			if (!isWall(destination_rect)) {
-				//ここらへんでボム爆発？
+			if (isWall(destination_rect)) {
 				break;
 			}
+			num = isBomb(destination_rect);
+			if (num != -1) {
+				bombsExplosion(this.bombs.get(num).rect, num);
+				break;
+			}
+
 			this.fires.add(new Fire(destination_rect));
 		}
 
@@ -138,9 +145,15 @@ class Field {
 
 			destination_rect = new Rectangle(center.x, center.y + (i * 50), Const.OBJ_SIZE, Const.OBJ_SIZE);
 
-			if (!isWall(destination_rect)) {
+			if (isWall(destination_rect)) {
 				break;
 			}
+			num = isBomb(destination_rect);
+			if (num != -1) {
+				bombsExplosion(this.bombs.get(num).rect, num);
+				break;
+			}
+
 			this.fires.add(new Fire(destination_rect));
 		}
 
@@ -149,9 +162,15 @@ class Field {
 
 			destination_rect = new Rectangle(center.x, center.y - (i * 50), Const.OBJ_SIZE, Const.OBJ_SIZE);
 
-			if (!isWall(destination_rect)) {
+			if (isWall(destination_rect)) {
 				break;
 			}
+			num = isBomb(destination_rect);
+			if (num != -1) {
+				bombsExplosion(this.bombs.get(num).rect, num);
+				break;
+			}
+
 			this.fires.add(new Fire(destination_rect));
 		}
 
@@ -160,9 +179,15 @@ class Field {
 
 			destination_rect = new Rectangle(center.x + (i * 50), center.y, Const.OBJ_SIZE, Const.OBJ_SIZE);
 
-			if (!isWall(destination_rect)) {
+			if (isWall(destination_rect)) {
 				break;
 			}
+			num = isBomb(destination_rect);
+			if (num != -1) {
+				bombsExplosion(this.bombs.get(num).rect, num);
+				break;
+			}
+
 			this.fires.add(new Fire(destination_rect));
 		}
 
@@ -179,20 +204,39 @@ class Field {
 		for (int i = 0; i < this.walls.size(); i++) {
 			//壁のrect と調査先のrect が交差するかをboolean で取得
 			if (this.walls.get(i).rect.intersects(destination_rect)) {
-				return false;
+				return true;
 			}
 		}
+
+		return false;
+	}
+
+	/*
+	 * ボムかどうかを判定する
+	 */
+	private int isBomb(Rectangle destination_rect) {
 
 		//全ボムループ
 		for (int i = 0; i < this.bombs.size(); i++) {
 			//ボムのrect と調査先のrect が交差するかをboolean で取得
 			if (this.bombs.get(i).rect.intersects(destination_rect)) {
-				return false;
+				return i;
 			}
 		}
 
-		//どの壁とも交差しなければ、移動可
-		return true;
+		return -1;
+	}
+
+	/*
+	 * ボムの爆発
+	 */
+	public void bombsExplosion(Rectangle rect, int i) {
+
+		//ボムの解放
+		this.releaseObject("bombs", i);
+
+		//炎生成
+		createFires(rect);
 	}
 
 	/*
