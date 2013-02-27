@@ -105,7 +105,7 @@ class MyTimer implements ActionListener {
 		for (int i = 0; i < this.field.bombs.size(); i++) {
 
 			//ボムの残り時間が無い場合
-			if (this.field.bombs.get(i).remainingCount == 0) {
+			if (this.field.bombs.get(i).remainingCount <= 0) {
 
 				//炎生成
 				this.field.createFires(this.field.bombs.get(i).rect);

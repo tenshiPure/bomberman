@@ -42,6 +42,9 @@ class Field {
 
 		//敵を生成する
 		createEnemies();
+
+		//画面の再描画
+		Main.panel.repaint();
 	}
 
 	/*
@@ -102,6 +105,9 @@ class Field {
 	public void createBomb(Rectangle rect) {
 
 		this.bombs.add(new Bomb(rect));
+
+		//画面の再描画
+		Main.panel.repaint();
 	}
 
 	/*
@@ -121,6 +127,7 @@ class Field {
 			destination_rect = new Rectangle(center.x - (i * 50), center.y, Const.OBJ_SIZE, Const.OBJ_SIZE);
 
 			if (!isWall(destination_rect)) {
+				//ここらへんでボム爆発？
 				break;
 			}
 			this.fires.add(new Fire(destination_rect));
@@ -140,7 +147,7 @@ class Field {
 		//上方向
 		for (int i = 1; i <= 2; i++) {
 
-			destination_rect = new Rectangle(center.x, center.y + (i - 50), Const.OBJ_SIZE, Const.OBJ_SIZE);
+			destination_rect = new Rectangle(center.x, center.y - (i * 50), Const.OBJ_SIZE, Const.OBJ_SIZE);
 
 			if (!isWall(destination_rect)) {
 				break;
@@ -158,6 +165,9 @@ class Field {
 			}
 			this.fires.add(new Fire(destination_rect));
 		}
+
+		//画面の再描画
+		Main.panel.repaint();
 	}
 
 	/*
@@ -168,8 +178,17 @@ class Field {
 		//全壁ループ
 		for (int i = 0; i < this.walls.size(); i++) {
 			//壁のrect と調査先のrect が交差するかをboolean で取得
-			if (this.walls.get(i).rect.intersects(destination_rect))
+			if (this.walls.get(i).rect.intersects(destination_rect)) {
 				return false;
+			}
+		}
+
+		//全ボムループ
+		for (int i = 0; i < this.bombs.size(); i++) {
+			//ボムのrect と調査先のrect が交差するかをboolean で取得
+			if (this.bombs.get(i).rect.intersects(destination_rect)) {
+				return false;
+			}
 		}
 
 		//どの壁とも交差しなければ、移動可
@@ -211,5 +230,8 @@ class Field {
 			this.enemies.get(i).label.setVisible(false);
 			this.enemies.remove(i);
 		}
+
+		//画面の再描画
+		Main.panel.repaint();
 	}
 }

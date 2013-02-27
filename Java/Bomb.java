@@ -14,6 +14,7 @@ class Bomb {
 
 	//ラベルを適当な画像で生成
 	public JLabel label = new JLabel(new ImageIcon("../Image/Bomb.gif"));
+	//public JLabel label = new JLabel("");
 
 	/*
 	 * コンストラクタ
@@ -26,6 +27,8 @@ class Bomb {
 		//ラベルの表示位置
 		this.label.setBounds(this.rect);
 
+		//this.label.setText(Integer.toString(this.remainingCount));
+
 		//パネルに追加
 		Main.panel.add(this.label);
 	}
@@ -36,5 +39,6 @@ class Bomb {
 	public void countDown() {
 
 		this.remainingCount -= 1;
+		//this.label.setText(Integer.toString(this.remainingCount));
 	}
 }
